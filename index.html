@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Graphene Roller · industrial composite rollers</title>
+  <!-- Google Fonts: Space Grotesk + DM Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+  <!-- Tailwind + Font Awesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* base + custom config */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'DM Sans', sans-serif; background: #F8FAFC; color: #334155; scroll-behavior: smooth; }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
+    .font-head { font-family: 'Space Grotesk', sans-serif; }
+    .font-body { font-family: 'DM Sans', sans-serif; }
+
+    /* hexagon animated bg (hero) */
+    .hex-bg {
+      position: absolute; inset: 0; overflow: hidden; z-index: 0;
+      background: radial-gradient(circle at 20% 30%, #1e293b 0%, #0F172A 90%);
+    }
+    .hex-grid {
+      position: absolute; width: 100%; height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M100 10 L190 55 L190 145 L100 190 L10 145 L10 55 Z' fill='none' stroke='%2364748B' stroke-width='0.4' opacity='0.2'/%3E%3C/svg%3E");
+      background-size: 80px 70px;
+      animation: drift 40s linear infinite;
+      opacity: 0.5;
+    }
+    @keyframes drift { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-60px) rotate(3deg); } }
+
+    /* scroll reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    /* counter */
+    .counter-value { font-variant-numeric: tabular-nums; }
+
+    /* glass navbar */
+    .glass-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(255,255,255,0.75); border-bottom: 1px solid rgba(100,116,139,0.15); }
+
+    /* mobile menu */
+    .mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+    .mobile-menu.open { max-height: 400px; }
+
+    /* timeline */
+    .timeline-line { position: relative; }
+    .timeline-line::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 3px; background: #64748B; border-radius: 4px; }
+    @media (min-width: 768px) {
+      .timeline-line::before { left: 50%; transform: translateX(-50%); }
+    }
+    .timeline-item { position: relative; }
+    .timeline-dot { width: 20px; height: 20px; background: #F97316; border: 3px solid #F8FAFC; border-radius: 50%; position: absolute; left: 12px; top: 6px; z-index: 2; }
+    @media (min-width: 768px) {
+      .timeline-dot { left: 50%; transform: translateX(-50%); }
+    }
+
+    /* touch targets min 44px */
+    .touch-min { min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center; }
+
+    /* whatsapp float */
+    .wa-float { position: fixed; bottom: 24px; right: 24px; z-index: 40; background: #25D366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.25); transition: transform 0.2s; }
+    .wa-float:hover { transform: scale(1.06); }
+    .wa-float i { font-size: 30px; color: white; }
+
+    /* product card badge */
+    .badge-orange { background: #F97316; color: white; padding: 2px 12px; border-radius: 30px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.3px; }
+
+    /* stats gradient */
+    .stats-gradient { background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%); }
+
+    /* cta orange gradient */
+    .cta-gradient { background: linear-gradient(135deg, #F97316 0%, #ea580c 100%); }
+
+    /* custom card dark */
+    .card-dark { background: #1e293b; border: 1px solid #334155; }
+
+    /* 44px touch for mobile hamburger */
+    .hamburger { min-width: 48px; min-height: 48px; display: flex; align-items: center; justify-content: center; }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION (fixed) -->
+<nav class="fixed top-0 left-0 w-full z-50 glass-nav">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-18">
+    <div class="flex items-center gap-2">
+      <i class="fas fa-hexagon text-[#64748B] text-2xl"></i>
+      <span class="font-head text-xl font-bold text-[#0F172A] tracking-tight">Graphene Roller</span>
+    </div>
+    <!-- desktop links -->
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-[#334155]">
+      <a href="#features" class="hover:text-[#F97316] transition">Features</a>
+      <a href="#products" class="hover:text-[#F97316] transition">Products</a>
+      <a href="#process" class="hover:text-[#F97316] transition">Process</a>
+      <a href="#contact" class="hover:text-[#F97316] transition">Contact</a>
+    </div>
+    <!-- mobile hamburger -->
+    <button id="menuToggle" class="hamburger md:hidden text-[#0F172A] focus:outline-none" aria-label="menu">
+      <i class="fas fa-bars text-2xl"></i>
+    </button>
+  </div>
+  <!-- mobile menu -->
+  <div id="mobileMenu" class="mobile-menu md:hidden bg-white/95 backdrop-blur-md px-4">
+    <div class="flex flex-col gap-3 pb-5 pt-2 text-base font-medium text-[#334155]">
+      <a href="#features" class="py-2 touch-min" onclick="closeMenu()">Features</a>
+      <a href="#products" class="py-2 touch-min" onclick="closeMenu()">Products</a>
+      <a href="#process" class="py-2 touch-min" onclick="closeMenu()">Process</a>
+      <a href="#contact" class="py-2 touch-min" onclick="closeMenu()">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="relative min-h-screen flex items-center overflow-hidden pt-16">
+  <div class="hex-bg"><div class="hex-grid"></div></div>
+  <div class="relative z-10 max-w-6xl mx-auto px-6 py-20 md:py-32 text-center md:text-left w-full">
+    <div class="max-w-3xl mx-auto md:mx-0">
+      <h1 class="font-head text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-white drop-shadow-xl">Industrial-Grade Graphene Composite Rollers</h1>
+      <p class="text-lg sm:text-xl md:text-2xl text-[#cbd5e1] mt-6 max-w-2xl font-light">Reinforced with atomic‑layer graphene — 300% longer life, extreme thermal stability, and 40% total cost savings.</p>
+      <div class="flex flex-col sm:flex-row gap-4 mt-10 items-center sm:items-start">
+        <a href="https://wa.me/77022655423" target="_blank" class="touch-min inline-flex items-center gap-3 bg-[#F97316] hover:bg-[#ea580c] text-white font-semibold px-8 py-4 rounded-xl text-lg transition shadow-2xl shadow-orange-500/30"><i class="fab fa-whatsapp text-2xl"></i> +7 702 265 5423</a>
+        <a href="#products" class="touch-min inline-flex items-center gap-2 border-2 border-white/40 text-white font-medium px-8 py-4 rounded-xl text-lg hover:bg-white/10 transition"><i class="fas fa-arrow-down"></i> Explore rollers</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE PROPS (4 cards 2x2) -->
+<section class="py-16 md:py-24 bg-[#F8FAFC]">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="grid grid-cols-2 gap-4 md:gap-8">
+      <div class="reveal bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 flex flex-col items-start">
+        <i class="fas fa-bolt text-3xl text-[#F97316] mb-4"></i>
+        <h3 class="font-head text-xl font-bold text-[#0F172A]">+300%</h3>
+        <p class="text-[#334155] text-sm">Wear life extension vs standard rollers</p>
+      </div>
+      <div class="reveal bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 flex flex-col items-start">
+        <i class="fas fa-snowflake text-3xl text-[#F97316] mb-4"></i>
+        <h3 class="font-head text-xl font-bold text-[#0F172A]">-40°C</h3>
+        <p class="text-[#334155] text-sm">Operates down to extreme cold</p>
+      </div>
+      <div class="reveal bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 flex flex-col items-start">
+        <i class="fas fa-shield text-3xl text-[#F97316] mb-4"></i>
+        <h3 class="font-head text-xl font-bold text-[#0F172A]">8–24 mo.</h3>
+        <p class="text-[#334155] text-sm">Service interval between maintenance</p>
+      </div>
+      <div class="reveal bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 flex flex-col items-start">
+        <i class="fas fa-coins text-3xl text-[#F97316] mb-4"></i>
+        <h3 class="font-head text-xl font-bold text-[#0F172A]">40% savings</h3>
+        <p class="text-[#334155] text-sm">Total cost of ownership reduction</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES (6 cards 3x2) -->
+<section id="features" class="py-16 md:py-24 bg-white">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <h2 class="reveal font-head text-3xl md:text-4xl font-bold text-[#0F172A] text-center mb-12">Engineered for extreme industry</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
+      <div class="reveal bg-[#F8FAFC] p-6 rounded-2xl border border-slate-200"><i class="fas fa-gem text-2xl text-[#F97316] mb-3"></i><h3 class="font-head text-lg font-bold">Wear Resistance</h3><p class="text-sm mt-1">Graphene surface reduces friction by 60%.</p></div>
+      <div class="reveal bg-[#F8FAFC] p-6 rounded-2xl border border-slate-200"><i class="fas fa-temperature-high text-2xl text-[#F97316] mb-3"></i><h3 class="font-head text-lg font-bold">Thermal Stability</h3><p class="text-sm mt-1">From -40°C to +250°C without degradation.</p></div>
+      <div class="reveal bg-[#F8FAFC] p-6 rounded-2xl border border-slate-200"><i class="fas fa-flask text-2xl text-[#F97316] mb-3"></i><h3 class="font-head text-lg font-bold">Chemical Resistance</h3><p class="text-sm mt-1">Inert to acids, solvents, caustic wash.</p></div>
+      <div class="reveal bg-[#F8FAFC] p-6 rounded-2xl border border-slate-200"><i class="fas fa-weight-hanging text-2xl text-[#F97316] mb-3"></i><h3 class="font-head text-lg font-bold">High Load</h3><p class="text-sm mt-1">Up to 1200 N/mm line load capacity.</p></div>
+      <div class="reveal bg-[#F8FAFC] p-6 rounded-2xl border border-slate-200"><i class="fas fa-ruler-combined text-2xl text-[#F97316] mb-3"></i><h3 class="font-head text-lg font-bold">Precision</h3><p class="text-sm mt-1">±0.01mm concentricity, mirror finish.</p></div>
+      <div class="reveal bg-[#F8FAFC] p-6 rounded-2xl border border-slate-200"><i class="fas fa-bolt text-2xl text-[#F97316] mb-3"></i><h3 class="font-head text-lg font-bold">Energy Efficiency</h3><p class="text-sm mt-1">15% lower drive power due to low inertia.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS (dark + animated counters) -->
+<section id="stats" class="stats-gradient py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <div class="reveal"><div class="counter-value text-5xl md:text-6xl font-head font-bold text-white" data-target="250">0</div><p class="text-[#94a3b8] text-sm mt-1">Installations</p></div>
+    <div class="reveal"><div class="counter-value text-5xl md:text-6xl font-head font-bold text-white" data-target="50">0</div><p class="text-[#94a3b8] text-sm mt-1">Clients</p></div>
+    <div class="reveal"><div class="counter-value text-5xl md:text-6xl font-head font-bold text-white" data-target="15">0</div><p class="text-[#94a3b8] text-sm mt-1">Countries</p></div>
+    <div class="reveal"><div class="counter-value text-5xl md:text-6xl font-head font-bold text-white" data-target="100">0</div><p class="text-[#94a3b8] text-sm mt-1">ISO Certified</p></div>
+  </div>
+</section>
+
+<!-- PROCESS (6-step timeline) -->
+<section id="process" class="py-16 md:py-24 bg-[#F8FAFC]">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <h2 class="reveal font-head text-3xl md:text-4xl font-bold text-[#0F172A] text-center mb-14">From material to global delivery</h2>
+    <div class="timeline-line relative pl-12 md:pl-0">
+      <div class="timeline-item mb-12 md:flex md:justify-between md:items-center">
+        <div class="timeline-dot"></div>
+        <div class="md:w-[45%] bg-white p-5 rounded-xl shadow-sm border border-slate-100"><span class="font-head text-[#F97316] font-bold">01</span><h3 class="font-head font-bold text-lg">Material Selection</h3><p class="text-sm">Premium graphene nanoplatelets & aerospace composites.</p></div>
+        <div class="hidden md:block md:w-[45%]"></div>
+      </div>
+      <div class="timeline-item mb-12 md:flex md:flex-row-reverse md:justify-between">
+        <div class="timeline-dot"></div>
+        <div class="md:w-[45%] bg-white p-5 rounded-xl shadow-sm border border-slate-100"><span class="font-head text-[#F97316] font-bold">02</span><h3 class="font-head font-bold text-lg">Graphene Application</h3><p class="text-sm">CVD & liquid‑phase exfoliation for uniform coating.</p></div>
+        <div class="hidden md:block md:w-[45%]"></div>
+      </div>
+      <div class="timeline-item mb-12 md:flex md:justify-between">
+        <div class="timeline-dot"></div>
+        <div class="md:w-[45%] bg-white p-5 rounded-xl shadow-sm border border-slate-100"><span class="font-head text-[#F97316] font-bold">03</span><h3 class="font-head font-bold text-lg">Precision Molding</h3><p class="text-sm">CNC‑controlled compression molding to ±0.005mm.</p></div>
+        <div class="hidden md:block md:w-[45%]"></div>
+      </div>
+      <div class="timeline-item mb-12 md:flex md:flex-row-reverse md:justify-between">
+        <div class="timeline-dot"></div>
+        <div class="md:w-[45%] bg-white p-5 rounded-xl shadow-sm border border-slate-100"><span class="font-head text-[#F97316] font-bold">04</span><h3 class="font-head font-bold text-lg">Quality Control</h3><p class="text-sm">Laser scanning, ultrasonic & load testing.</p></div>
+        <div class="hidden md:block md:w-[45%]"></div>
+      </div>
+      <div class="timeline-item mb-12 md:flex md:justify-between">
+        <div class="timeline-dot"></div>
+        <div class="md:w-[45%] bg-white p-5 rounded-xl shadow-sm border border-slate-100"><span class="font-head text-[#F97316] font-bold">05</span><h3 class="font-head font-bold text-lg">ISO Certification</h3><p class="text-sm">ISO 9001:2024 & AS9100D aerospace standard.</p></div>
+        <div class="hidden md:block md:w-[45%]"></div>
+      </div>
+      <div class="timeline-item md:flex md:flex-row-reverse md:justify-between">
+        <div class="timeline-dot"></div>
+        <div class="md:w-[45%] bg-white p-5 rounded-xl shadow-sm border border-slate-100"><span class="font-head text-[#F97316] font-bold">06</span><h3 class="font-head font-bold text-lg">Global Delivery</h3><p class="text-sm">Express shipping to 50+ countries, 5‑year warranty.</p></div>
+        <div class="hidden md:block md:w-[45%]"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS (3 cards) -->
+<section id="products" class="py-16 md:py-24 bg-white">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <h2 class="reveal font-head text-3xl md:text-4xl font-bold text-[#0F172A] text-center mb-12">Roller series</h2>
+    <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+      <!-- GR-2000 -->
+      <div class="reveal card-dark rounded-2xl p-6 text-white flex flex-col">
+        <div class="flex justify-between items-start"><h3 class="font-head text-2xl font-bold">GR-2000</h3><span class="badge-orange">Bestseller</span></div>
+        <p class="text-sm text-[#94a3b8] mt-2">All‑round industrial graphene roller</p>
+        <ul class="mt-4 space-y-1 text-sm text-[#cbd5e1]"><li><i class="fas fa-check text-[#F97316] mr-2"></i>Wear +250%</li><li><i class="fas fa-check text-[#F97316] mr-2"></i>Load 800 N/mm</li><li><i class="fas fa-check text-[#F97316] mr-2"></i>Temp -30°C/+200°C</li></ul>
+        <div class="mt-6 flex items-center justify-between"><span class="text-lg font-bold">$4,290</span><a href="#" class="touch-min bg-[#F97316] px-5 py-2 rounded-lg text-sm font-semibold hover:bg-[#ea580c]">Get quote</a></div>
+      </div>
+      <!-- GR-5000 -->
+      <div class="reveal card-dark rounded-2xl p-6 text-white flex flex-col">
+        <div class="flex justify-between items-start"><h3 class="font-head text-2xl font-bold">GR-5000</h3><span class="badge-orange">Heavy duty</span></div>
+        <p class="text-sm text-[#94a3b8] mt-2">Max load & extreme chemical resistance</p>
+        <ul class="mt-4 space-y-1 text-sm text-[#cbd5e1]"><li><i class="fas fa-check text-[#F97316] mr-2"></i>Wear +320%</li><li><i class="fas fa-check text-[#F97316] mr-2"></i>Load 1200 N/mm</li><li><i class="fas fa-check text-[#F97316] mr-2"></i>Temp -40°C/+250°C</li></ul>
+        <div class="mt-6 flex items-center justify-between"><span class="text-lg font-bold">$6,850</span><a href="#" class="touch-min bg-[#F97316] px-5 py-2 rounded-lg text-sm font-semibold hover:bg-[#ea580c]">Get quote</a></div>
+      </div>
+      <!-- GR-7000 -->
+      <div class="reveal card-dark rounded-2xl p-6 text-white flex flex-col">
+        <div class="flex justify-between items-start"><h3 class="font-head text-2xl font-bold">GR-7000</h3><span class="badge-orange">Smart</span></div>
+        <p class="text-sm text-[#94a3b8] mt-2">Embedded IoT sensors + predictive analytics</p>
+        <ul class="mt-4 space-y-1 text-sm text-[#cbd5e1]"><li><i class="fas fa-check text-[#F97316] mr-2"></i>Wear +350%</li><li><i class="fas fa-check text-[#F97316] mr-2"></i>Load 1400 N/mm</li><li><i class="fas fa-check text-[#F97316] mr-2"></i>Smart wear alerts</li></ul>
+        <div class="mt-6 flex items-center justify-between"><span class="text-lg font-bold">$9,450</span><a href="#" class="touch-min bg-[#F97316] px-5 py-2 rounded-lg text-sm font-semibold hover:bg-[#ea580c]">Get quote</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section id="contact" class="cta-gradient py-20 md:py-28">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h2 class="reveal font-head text-3xl md:text-5xl font-bold text-white drop-shadow-lg">Ready to Upgrade Your Rollers?</h2>
+    <p class="text-white/80 text-lg mt-4 max-w-xl mx-auto">Get a free consultation & sample test. 30+ years of graphene engineering.</p>
+    <div class="mt-10 flex justify-center">
+      <a href="https://wa.me/77022655423" target="_blank" class="touch-min inline-flex items-center gap-3 bg-white text-[#F97316] hover:bg-gray-100 font-bold px-10 py-5 rounded-xl text-xl shadow-2xl transition"><i class="fab fa-whatsapp text-3xl"></i> +7 702 265 5423</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-[#0F172A] text-[#94a3b8] py-12">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+    <div><h4 class="font-head text-white text-lg font-bold">Graphene Roller</h4><p class="text-sm mt-2">Industrial graphene composite rollers since 2020.</p></div>
+    <div class="flex flex-col gap-2 text-sm"><a href="#features" class="hover:text-white transition">Features</a><a href="#products" class="hover:text-white transition">Products</a><a href="#process" class="hover:text-white transition">Process</a></div>
+    <div class="text-sm">© 2026 Graphene Roller GmbH. All rights reserved.<br>ISO 9001:2024 · AS9100D</div>
+  </div>
+</footer>
+
+<!-- WhatsApp floating button -->
+<a href="https://wa.me/77022655423" target="_blank" class="wa-float" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+<script>
+  (function() {
+    // mobile menu toggle
+    const toggle = document.getElementById('menuToggle');
+    const menu = document.getElementById('mobileMenu');
+    window.closeMenu = function() { menu.classList.remove('open'); };
+    if (toggle) {
+      toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        menu.classList.toggle('open');
+      });
+    }
+
+    // IntersectionObserver for reveals
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.2 });
+    reveals.forEach(el => observer.observe(el));
+
+    // animated counters (stats)
+    const counters = document.querySelectorAll('.counter-value');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.getAttribute('data-target'), 10);
+          if (target && !el.dataset.animated) {
+            el.dataset.animated = 'true';
+            animateCounter(el, target);
+          }
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(c => counterObserver.observe(c));
+
+    function animateCounter(el, max) {
+      let current = 0;
+      const step = Math.ceil(max / 45);
+      const interval = setInterval(() => {
+        current += step;
+        if (current >= max) { current = max; clearInterval(interval); }
+        el.textContent = current + (max === 100 ? '%' : '+');
+      }, 30);
+    }
+
+    // smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        // close mobile menu if open
+        if (menu) menu.classList.remove('open');
+      });
+    });
+  })();
+</script>
+</body>
+</html>
