@@ -1,515 +1,1517 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>Graphene Roller · Графеновые композитные ролики</title>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
-  <!-- Three.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #0a0a0f; color: #e0e0e0; overflow-x: hidden; }
-    a { text-decoration: none; color: inherit; }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0a0a0f; }
-    ::-webkit-scrollbar-thumb { background: #00c8ff; border-radius: 10px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphene Roller — Инновационные композитные валки</title>
+<meta name="description" content="Graphene Roller — производство графеновых композитных валков с повышенной износостойкостью для промышленности.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#e0e0e0;line-height:1.6;overflow-x:hidden;
+ -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+::selection{background:rgba(0,200,255,0.3);color:#fff}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;height:auto;display:block}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+input,textarea,select{font-family:inherit;font-size:inherit;color:inherit;background:transparent;border:none;outline:none}
+ul{list-style:none}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+section{padding:100px 0;position:relative}
 
-    /* scroll progress */
-    #scrollProgress { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: linear-gradient(90deg, #00c8ff, #64ffda); z-index: 9999; transition: width 0.1s; }
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0a0a0f}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#00c8ff,#64ffda);border-radius:3px}
 
-    /* glass navbar */
-    .navbar { position: fixed; top: 0; width: 100%; padding: 0.8rem 2rem; background: rgba(10,10,15,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.04); z-index: 1000; transition: transform 0.35s cubic-bezier(0.2,0,0,1); display: flex; justify-content: space-between; align-items: center; }
-    .navbar.hidden { transform: translateY(-100%); }
-    .logo { font-weight: 700; font-size: 1.5rem; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
-    .logo span { background: linear-gradient(135deg, #00c8ff, #64ffda); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .nav-links { display: flex; gap: 2rem; font-weight: 500; }
-    .nav-links a { opacity: 0.7; transition: 0.2s; }
-    .nav-links a:hover { opacity: 1; color: #00c8ff; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: transparent; border: none; }
-    .hamburger span { width: 26px; height: 2px; background: #e0e0e0; border-radius: 4px; transition: 0.3s; }
+/* ===== SCROLL PROGRESS ===== */
+#scroll-progress{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,#00c8ff,#64ffda);z-index:10000;transition:width 50ms linear}
 
-    /* lang toggle fixed */
-    .lang-toggle { position: fixed; top: 1.2rem; right: 2rem; z-index: 1100; background: rgba(20,20,30,0.7); backdrop-filter: blur(8px); padding: 0.3rem 1rem; border-radius: 40px; border: 1px solid rgba(255,255,255,0.08); display: flex; gap: 6px; font-weight: 500; font-size: 0.9rem; }
-    .lang-toggle button { background: transparent; border: none; color: #888; padding: 4px 8px; border-radius: 30px; cursor: pointer; transition: 0.2s; font-weight: 500; }
-    .lang-toggle button.active { background: #00c8ff33; color: #00c8ff; }
+/* ===== NAVBAR ===== */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:9999;padding:16px 0;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1),background 0.4s;
+ background:rgba(10,10,15,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06)}
+.navbar.hidden{transform:translateY(-100%)}
+.navbar .container{display:flex;align-items:center;justify-content:space-between}
+.navbar .logo{font-size:20px;font-weight:800;letter-spacing:-0.5px;background:linear-gradient(135deg,#00c8ff,#64ffda);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.navbar .logo span{display:inline-block}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:14px;font-weight:500;color:#888;transition:color 0.3s;position:relative}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:2px;background:linear-gradient(90deg,#00c8ff,#64ffda);transition:width 0.3s}
+.nav-links a:hover{color:#e0e0e0}
+.nav-links a:hover::after{width:100%}
+.nav-cta{padding:10px 24px;background:linear-gradient(135deg,#00c8ff,#64ffda);border-radius:8px;color:#0a0a0f !important;font-weight:700 !important;font-size:13px !important;transition:transform 0.3s,box-shadow 0.3s}
+.nav-cta::after{display:none !important}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,200,255,0.3)}.nav-cta:hover{color:#0a0a0f !important}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:4px;z-index:100}
+.hamburger span{width:24px;height:2px;background:#e0e0e0;transition:all 0.3s;border-radius:2px}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 
-    /* general */
-    .container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
-    section { padding: 5rem 0; position: relative; }
-    .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(0,200,255,0.2), transparent); margin: 0; }
+/* ===== LANGUAGE TOGGLE ===== */
+.lang-toggle{position:fixed;top:20px;right:20px;z-index:9998;display:flex;gap:4px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:3px;backdrop-filter:blur(12px)}
+.lang-toggle button{padding:5px 10px;font-size:11px;font-weight:600;border-radius:6px;color:#888;transition:all 0.3s;text-transform:uppercase}
+.lang-toggle button.active{background:linear-gradient(135deg,#00c8ff,#64ffda);color:#0a0a0f}
 
-    /* headings */
-    h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 2.5rem; background: linear-gradient(135deg, #00c8ff, #64ffda); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; }
-    .gradient-text { background: linear-gradient(135deg, #00c8ff, #64ffda); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:80px}
+#hero-canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,200,255,0.08) 0%,transparent 70%);z-index:1;pointer-events:none}
+.hero .container{position:relative;z-index:2;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:rgba(0,200,255,0.1);border:1px solid rgba(0,200,255,0.2);border-radius:100px;font-size:13px;font-weight:500;color:#00c8ff;margin-bottom:32px;letter-spacing:0.3px}
+.hero-badge-dot{width:6px;height:6px;background:#64ffda;border-radius:50%;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;line-height:1.1;margin-bottom:24px;letter-spacing:-2px}
+.hero h1 .gradient-text{background:linear-gradient(135deg,#00c8ff,#64ffda,#00c8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 200%;animation:shimmer 4s ease infinite}
+@keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero p{font-size:clamp(1rem,1.5vw,1.2rem);color:#888;max-width:600px;margin:0 auto 40px;line-height:1.7}
+.hero-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;background:linear-gradient(135deg,#00c8ff,#64ffda);color:#0a0a0f;font-weight:700;font-size:15px;border-radius:12px;transition:all 0.3s}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,200,255,0.35)}
+.btn-secondary{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#e0e0e0;font-weight:600;font-size:15px;border-radius:12px;transition:all 0.3s}
+.btn-secondary:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);transform:translateY(-3px)}
+.btn-whatsapp{background:linear-gradient(135deg,#25d366,#128C7E) !important;color:#fff !important}
+.btn-whatsapp:hover{box-shadow:0 12px 40px rgba(37,211,102,0.35) !important}
+.btn-whatsapp svg{width:20px;height:20px}
+/* Scroll indicator */
+.scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;color:#555;font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.scroll-line{width:1px;height:40px;background:linear-gradient(180deg,#00c8ff,transparent);animation:scroll-line 2s ease infinite}
+@keyframes scroll-line{0%{opacity:1;transform:scaleY(1);transform-origin:top}100%{opacity:0;transform:scaleY(0);transform-origin:top}}
 
-    /* hero */
-    #hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; }
-    #hero canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
-    .hero-content { position: relative; z-index: 10; max-width: 900px; padding: 2rem; }
-    .hero-content h1 { font-size: clamp(2.4rem, 8vw, 4.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
-    .hero-content p { font-size: 1.2rem; color: #aaa; margin-bottom: 2.5rem; max-width: 650px; margin-left: auto; margin-right: auto; }
-    .btn-whatsapp { display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: #0a0a0f; font-weight: 700; padding: 1rem 2.5rem; border-radius: 60px; font-size: 1.2rem; transition: 0.2s; box-shadow: 0 0 30px rgba(37,211,102,0.3); border: none; cursor: pointer; }
-    .btn-whatsapp:hover { transform: scale(1.03); background: #20bd5a; }
-    .scroll-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 6px; color: #666; font-size: 0.75rem; letter-spacing: 2px; }
+/* ===== SECTION HEADERS ===== */
+.section-header{text-align:center;margin-bottom:64px}
+.section-tag{display:inline-block;padding:6px 16px;background:rgba(0,200,255,0.08);border:1px solid rgba(0,200,255,0.15);border-radius:100px;font-size:12px;font-weight:600;color:#00c8ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.section-header h2{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-1px;margin-bottom:16px}
+.section-header p{color:#888;font-size:1.05rem;max-width:560px;margin:0 auto}
 
-    /* cards / benefits */
-    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
-    .benefit-card { background: rgba(255,255,255,0.03); border-radius: 24px; padding: 2rem 1.5rem; border: 1px solid rgba(255,255,255,0.04); transition: 0.3s; cursor: default; border-top: 4px solid transparent; }
-    .benefit-card:hover { border-top: 4px solid #00c8ff; background: rgba(255,255,255,0.06); transform: translateY(-6px); }
-    .benefit-card .num { font-size: 2.8rem; font-weight: 800; background: linear-gradient(135deg, #00c8ff, #64ffda); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .benefit-card h3 { font-size: 1.4rem; margin: 0.5rem 0; }
-    .benefit-card p { color: #999; }
+/* ===== BENEFITS ===== */
+.benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px}
+.benefit-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:36px 28px;text-align:center;
+ transition:all 0.4s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden}
+.benefit-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#00c8ff,#64ffda);opacity:0;transition:opacity 0.4s}
+.benefit-card:hover::before{opacity:1}
+.benefit-card:hover{transform:translateY(-8px);border-color:rgba(0,200,255,0.2);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.benefit-icon{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,rgba(0,200,255,0.15),rgba(100,255,218,0.1));display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:24px}
+.benefit-card h3{font-size:clamp(1.5rem,2.5vw,2rem);font-weight:800;margin-bottom:8px;background:linear-gradient(135deg,#00c8ff,#64ffda);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.benefit-card p{font-size:14px;color:#888;line-height:1.6}
 
-    /* products */
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; }
-    .product-card { background: rgba(255,255,255,0.02); border-radius: 30px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.04); transition: 0.3s; transform-style: preserve-3d; perspective: 1000px; }
-    .product-card:hover { transform: rotateX(2deg) rotateY(4deg) scale(1.01); border-color: rgba(0,200,255,0.2); }
-    .product-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 20px; margin-bottom: 1.2rem; }
-    .product-card .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-    .product-card .tag { background: rgba(0,200,255,0.15); padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.7rem; font-weight: 600; color: #00c8ff; letter-spacing: 0.5px; }
-    .product-card .spec { background: rgba(100,255,218,0.1); color: #64ffda; }
-    .product-card h3 { font-size: 1.6rem; margin-bottom: 4px; }
-    .product-card p { color: #aaa; font-size: 0.9rem; }
+/* ===== PRODUCTS ===== */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:28px}
+.product-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;transition:all 0.5s cubic-bezier(0.4,0,0.2,1);cursor:pointer;
+ transform:perspective(1000px) rotateX(0) rotateY(0)}
+.product-card:hover{transform:perspective(1000px) rotateX(2deg) rotateY(2deg);border-color:rgba(0,200,255,0.25);box-shadow:0 30px 80px rgba(0,0,0,0.4)}
+.product-card-image{height:220px;overflow:hidden;position:relative}
+.product-card-image img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s}
+.product-card:hover .product-card-image img{transform:scale(1.08)}
+.product-tag{position:absolute;top:16px;right:16px;padding:4px 14px;border-radius:100px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;z-index:2}
+.product-tag.bestseller{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff}
+.product-tag.heavy-duty{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff}
+.product-tag.smart{background:linear-gradient(135deg,#10b981,#00c8ff);color:#fff}
+.product-card-body{padding:28px}
+.product-card-body h3{font-size:1.25rem;font-weight:700;margin-bottom:8px}
+.product-card-body p{font-size:14px;color:#888;line-height:1.6;margin-bottom:16px}
+.product-specs{display:flex;flex-wrap:wrap;gap:8px}
+.product-specs span{padding:4px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.06);border-radius:6px;font-size:12px;color:#aaa}
 
-    /* technology */
-    .grid-4-tech { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
-    .tech-card { background: rgba(255,255,255,0.02); border-radius: 28px; padding: 2rem 1.5rem; border: 1px solid rgba(255,255,255,0.04); position: relative; overflow: hidden; transition: 0.2s; }
-    .tech-card:hover { border-color: rgba(0,200,255,0.2); }
-    .tech-card .bg-number { position: absolute; right: 10px; top: -10px; font-size: 6rem; font-weight: 900; color: rgba(0,200,255,0.04); line-height: 1; pointer-events: none; }
-    .tech-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-    .tech-card p { color: #999; }
+/* ===== TECHNOLOGY ===== */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.tech-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:36px 28px;position:relative;
+ overflow:hidden;transition:all 0.4s cubic-bezier(0.4,0,0.2,1)}
+.tech-card:hover{border-color:rgba(0,200,255,0.2);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.tech-number{font-size:clamp(4rem,6vw,5.5rem);font-weight:900;background:linear-gradient(135deg,rgba(0,200,255,0.08),rgba(100,255,218,0.04));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+ position:absolute;top:-10px;right:16px;line-height:1;pointer-events:none;user-select:none}
+.tech-card h3{font-size:1.15rem;font-weight:700;margin-bottom:10px;position:relative;z-index:1}
+.tech-card p{font-size:14px;color:#888;line-height:1.7;position:relative;z-index:1}
 
-    /* stats */
-    .stats-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 3rem 5rem; margin-bottom: 2rem; }
-    .stat-item { text-align: center; }
-    .stat-item .number { font-size: 3.5rem; font-weight: 800; background: linear-gradient(135deg, #00c8ff, #64ffda); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .stat-item .label { color: #aaa; font-size: 1rem; }
-    .about-text { max-width: 700px; margin: 2rem auto 0; text-align: center; color: #bbb; line-height: 1.6; }
+/* ===== ABOUT / STATS ===== */
+.about-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.about-image{height:400px;border-radius:20px;overflow:hidden;position:relative}
+.about-image img{width:100%;height:100%;object-fit:cover}
+.about-image::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,200,255,0.2),transparent)}
+.about-content h2{font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;letter-spacing:-1px;margin-bottom:16px}
+.about-content p{color:#888;font-size:1rem;line-height:1.8;margin-bottom:32px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.stat-item{text-align:center;padding:20px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06)}
+.stat-number{font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:800;background:linear-gradient(135deg,#00c8ff,#64ffda);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2}
+.stat-label{font-size:12px;color:#888;margin-top:4px}
 
-    /* process */
-    .process-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; }
-    .step-card { background: rgba(255,255,255,0.02); border-radius: 24px; padding: 1.8rem 1rem; text-align: center; border: 1px solid rgba(255,255,255,0.04); transition: 0.2s; }
-    .step-card:hover { border-color: #00c8ff33; }
-    .step-card .step-num { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, #00c8ff, #64ffda); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .step-card h4 { margin: 0.5rem 0; }
-    .step-card .arrow { color: #00c8ff; font-size: 1.4rem; display: inline-block; margin-top: 6px; }
+/* ===== PROCESS ===== */
+.process-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:20px;position:relative}
+.process-step{text-align:center;padding:28px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;position:relative;transition:all 0.4s}
+.process-step:hover{transform:translateY(-4px);border-color:rgba(0,200,255,0.2);box-shadow:0 12px 40px rgba(0,0,0,0.3)}
+.process-step .step-num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#00c8ff,#64ffda);color:#0a0a0f;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.process-step h4{font-size:13px;font-weight:700;margin-bottom:6px}
+.process-step p{font-size:12px;color:#888;line-height:1.5}
+/* connector line between steps */
+.process-grid{position:relative}
 
-    /* global */
-    .country-tags { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
-    .country-tag { background: rgba(255,255,255,0.04); padding: 0.6rem 1.8rem; border-radius: 60px; border: 1px solid rgba(255,255,255,0.06); font-weight: 500; transition: 0.2s; }
-    .country-tag:hover { border-color: #00c8ff; color: #00c8ff; }
+/* ===== GLOBAL ===== */
+.global-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:800px;margin:0 auto}
+.global-tag{padding:12px 28px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;font-size:14px;font-weight:500;transition:all 0.4s}
+.global-tag:hover{background:rgba(0,200,255,0.1);border-color:rgba(0,200,255,0.3);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,200,255,0.15)}
 
-    /* contact */
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
-    @media (max-width: 800px) { .contact-grid { grid-template-columns: 1fr; } }
-    .contact-form input, .contact-form textarea { width: 100%; padding: 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; margin-bottom: 1rem; color: #e0e0e0; font-family: 'Inter', sans-serif; }
-    .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: #00c8ff; }
-    .contact-info-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .info-card { background: rgba(255,255,255,0.03); border-radius: 20px; padding: 1.2rem; border: 1px solid rgba(255,255,255,0.04); }
-    .info-card h4 { color: #00c8ff; margin-bottom: 4px; }
-    .map-placeholder { background: rgba(255,255,255,0.03); border-radius: 24px; height: 180px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.04); color: #555; margin-top: 1rem; }
+/* ===== CONTACT ===== */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.contact-form{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:40px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:#aaa;margin-bottom:8px}
+.form-group input,.form-group textarea{width:100%;padding:14px 18px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-size:15px;color:#e0e0e0;transition:all 0.3s}
+.form-group input:focus,.form-group textarea:focus{border-color:#00c8ff;box-shadow:0 0 0 3px rgba(0,200,255,0.1);background:rgba(0,200,255,0.05)}
+.form-group textarea{min-height:120px;resize:vertical}
+.form-submit{width:100%;padding:16px;background:linear-gradient(135deg,#00c8ff,#64ffda);color:#0a0a0f;font-weight:700;font-size:15px;border-radius:12px;transition:all 0.3s}
+.form-submit:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,200,255,0.3)}
+.form-success{display:none;padding:24px;background:rgba(100,255,218,0.1);border:1px solid rgba(100,255,218,0.2);border-radius:12px;text-align:center;color:#64ffda;font-weight:600;margin-top:16px}
+.form-success.show{display:block}
+.contact-info{display:flex;flex-direction:column;gap:16px}
+.contact-info-card{display:flex;align-items:center;gap:16px;padding:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;transition:all 0.3s}
+.contact-info-card:hover{background:rgba(0,200,255,0.05);border-color:rgba(0,200,255,0.15);transform:translateX(4px)}
+.contact-info-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(0,200,255,0.15),rgba(100,255,218,0.1));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.contact-info-text h4{font-size:14px;font-weight:700;margin-bottom:2px}
+.contact-info-text p{font-size:13px;color:#888}
 
-    /* cta banner */
-    .cta-banner { background: linear-gradient(135deg, #00c8ff20, #64ffda20); border-radius: 60px; padding: 4rem 2rem; text-align: center; border: 1px solid rgba(255,255,255,0.04); }
-    .cta-banner h2 { font-size: 2.5rem; max-width: 700px; margin: 0 auto 1.5rem; }
+/* ===== CTA BANNER ===== */
+.cta-banner{background:linear-gradient(135deg,rgba(0,200,255,0.12),rgba(100,255,218,0.08));border:1px solid rgba(0,200,255,0.15);border-radius:24px;padding:80px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-banner::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at center,rgba(0,200,255,0.05),transparent 60%);pointer-events:none}
+.cta-banner h2{font-size:clamp(1.8rem,3vw,2.8rem);font-weight:800;letter-spacing:-1px;margin-bottom:16px;position:relative}
+.cta-banner p{color:#aaa;max-width:500px;margin:0 auto 32px;font-size:1.05rem;position:relative}
 
-    /* footer */
-    .footer-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; padding: 3rem 0 2rem; }
-    @media (max-width:700px){ .footer-grid{ grid-template-columns: 1fr 1fr; } }
-    .footer-col h4 { color: #00c8ff; margin-bottom: 1rem; }
-    .footer-col a { display: block; color: #888; margin-bottom: 0.4rem; transition: 0.2s; }
-    .footer-col a:hover { color: #e0e0e0; }
-    .social-icons { display: flex; gap: 1rem; margin-top: 1rem; }
-    .social-icons span { font-size: 1.5rem; opacity: 0.6; cursor: default; }
-    .copyright { text-align: center; padding: 1.5rem 0 0.5rem; color: #555; border-top: 1px solid rgba(255,255,255,0.04); margin-top: 1rem; }
+/* ===== FOOTER ===== */
+.footer{border-top:1px solid rgba(255,255,255,0.06);padding:60px 0 30px}
+.footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;margin-bottom:40px}
+.footer-col h4{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#e0e0e0;margin-bottom:20px}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{font-size:14px;color:#888;transition:color 0.3s}
+.footer-col ul li a:hover{color:#00cff}
+.footer-col p{font-size:14px;color:#888;line-height:1.7}
+.footer-social{display:flex;gap:12px;margin-top:16px}
+.footer-social a{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;transition:all 0.3s}
+.footer-social a:hover{background:rgba(0,200,255,0.1);border-color:#00c8ff;transform:translateY(-3px)}
+.footer-bottom{padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-bottom p{font-size:13px;color:#555}
+.footer-bottom-links{display:flex;gap:24px}
+.footer-bottom-links a{font-size:13px;color:#555;transition:color 0.3s}
+.footer-bottom-links a:hover{color:#888}
 
-    /* floating whatsapp + chatbot */
-    .float-wa { position: fixed; bottom: 100px; right: 20px; z-index: 900; background: #25D366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(37,211,102,0.3); animation: pulse 2s infinite; cursor: pointer; font-size: 2rem; color: #0a0a0f; border: none; }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 70% { box-shadow: 0 0 0 20px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
-    .chatbot-toggle { position: fixed; bottom: 30px; right: 20px; z-index: 900; background: #00c8ff; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(0,200,255,0.3); cursor: pointer; border: none; font-size: 1.8rem; color: #0a0a0f; }
-    .chatbot-panel { position: fixed; bottom: 100px; right: 20px; width: 300px; background: #12121a; border-radius: 24px; border: 1px solid rgba(255,255,255,0.06); backdrop-filter: blur(12px); padding: 1rem; display: none; z-index: 950; color: #e0e0e0; }
-    .chatbot-panel.open { display: block; }
-    .chatbot-msg { background: rgba(0,200,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; margin-bottom: 8px; }
-    .quick-reply { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
-    .quick-reply button { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #ccc; padding: 4px 12px; border-radius: 30px; font-size: 0.75rem; cursor: pointer; }
+/* ===== WHATSAPP FLOATING ===== */
+.whatsapp-float{position:fixed;bottom:100px;right:24px;z-index:9990;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#25d366,#128C7E);display:flex;align-items:center;justify-content:center;
+ box-shadow:0 8px 32px rgba(37,211,102,0.35);transition:all 0.3s;cursor:pointer}
+.whatsapp-float:hover{transform:scale(1.1);box-shadow:0 12px 48px rgba(37,211,102,0.5)}
+.whatsapp-float svg{width:28px;height:28px;fill:#fff}
+.whatsapp-float::before{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(37,211,102,0.3);animation:wa-pulse 2s infinite}
+@keyframes wa-pulse{0%{transform:scale(1);opacity:1}100%{transform:scale(1.3);opacity:0}}
 
-    /* animations utils */
-    .fade-up { opacity: 0; transform: translateY(40px); transition: 0.7s cubic-bezier(0.2,0,0,1); }
-    .fade-up.visible { opacity: 1; transform: translateY(0); }
-    .slide-left { opacity: 0; transform: translateX(-40px); transition: 0.7s; }
-    .slide-left.visible { opacity: 1; transform: translateX(0); }
-    .slide-right { opacity: 0; transform: translateX(40px); transition: 0.7s; }
-    .slide-right.visible { opacity: 1; transform: translateX(0); }
+/* ===== CHATBOT ===== */
+.chat-toggle{position:fixed;bottom:24px;right:24px;z-index:9990;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#00c8ff,#64ffda);display:flex;align-items:center;justify-content:center;
+ box-shadow:0 8px 32px rgba(0,200,255,0.35);transition:all 0.3s;cursor:pointer}
+.chat-toggle:hover{transform:scale(1.1);box-shadow:0 12px 48px rgba(0,200,255,0.5)}
+.chat-toggle svg{width:24px;height:24px;fill:#0a0a0f}
+.chat-panel{position:fixed;bottom:96px;right:24px;width:360px;max-width:calc(100vw - 48px);height:500px;max-height:calc(100vh - 160px);background:#0f0f18;border:1px solid rgba(255,255,255,0.1);border-radius:20px;z-index:9989;
+ display:none;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,0.5);overflow:hidden}
+.chat-panel.open{display:flex}
+.chat-header{padding:20px;background:linear-gradient(135deg,rgba(0,200,255,0.1),rgba(100,255,218,0.05));border-bottom:1px solid rgba(255,255,255,0.06);
+ display:flex;justify-content:space-between;align-items:center}
+.chat-header h3{font-size:15px;font-weight:700}
+.chat-close{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.08);cursor:pointer;transition:all 0.3s}
+.chat-close:hover{background:rgba(255,255,255,0.15)}
+.chat-close svg{width:16px;height:16px;fill:#888}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
+.chat-messages::-webkit-scrollbar{width:4px}
+.chat-messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
+.chat-msg{max-width:85%;padding:12px 16px;border-radius:14px;font-size:14px;line-height:1.5;animation:chat-in 0.3s ease}
+.chat-msg.bot{align-self:flex-start;background:rgba(255,255,255,0.06);border-bottom-left-radius:4px}
+.chat-msg.user{align-self:flex-end;background:linear-gradient(135deg,rgba(0,200,255,0.2),rgba(100,255,218,0.15));border-bottom-right-radius:4px}
+@keyframes chat-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.chat-quick-reply{display:none;flex-wrap:wrap;gap:8px;padding:0 20px 12px}
+.chat-quick-reply.show{display:flex}
+.chat-quick-reply button{padding:8px 16px;background:rgba(0,200,255,0.1);border:1px solid rgba(0,200,255,0.2);border-radius:100px;font-size:12px;font-weight:500;color:#00c8ff;transition:all 0.3s}
+.chat-quick-reply button:hover{background:rgba(0,200,255,0.2);transform:translateY(-2px)}
+.chat-input-area{display:flex;gap:8px;padding:12px 20px 20px;border-top:1px solid rgba(255,255,255,0.06)}
+.chat-input-area input{flex:1;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:12px;font-size:14px;color:#e0e0e0}
+.chat-input-area input:focus{border-color:#00c8ff}
+.chat-send{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#00c8ff,#64ffda);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-send svg{width:18px;height:18px;fill:#0a0a0f}
 
-    /* mobile */
-    @media (max-width: 700px) {
-      .nav-links { display: none; flex-direction: column; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); position: absolute; top: 70px; left: 0; width: 100%; padding: 2rem; gap: 1.5rem; }
-      .nav-links.open { display: flex; }
-      .hamburger { display: flex; }
-      .lang-toggle { top: 1rem; right: 1rem; }
-    }
-  </style>
+/* ===== REVEAL ANIMATIONS ===== */
+.reveal{opacity:0;transform:translateY(40px);transition:all 0.7s cubic-bezier(0.4,0,0.2,1);pointer-events:none}
+.reveal.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:all 0.7s cubic-bezier(0.4,0,0.2,1);pointer-events:none}
+.reveal-left.visible{opacity:1;transform:translateX(0);pointer-events:auto}
+.reveal-right{opacity:0;transform:translateX(40px);transition:all 0.7s cubic-bezier(0.4,0,0.2,1);pointer-events:none}
+.reveal-right.visible{opacity:1;transform:translateX(0);pointer-events:auto}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+ .nav-links{position:fixed;top:0;right:-100%;width:280px;height:100vh;background:rgba(10,10,15,0.98);backdrop-filter:blur(20px);flex-direction:column;padding:100px 32px 32px;gap:24px;transition:right 0.4s cubic-bezier(0.4,0,0.2,1);border-left:1px solid rgba(255,255,255,0.06)}
+ .nav-links.open{right:0}
+ .nav-links a{font-size:16px}
+ .hamburger{display:flex}
+ section{padding:60px 0}
+ .about-wrapper{grid-template-columns:1fr}
+ .about-image{height:280px}
+ .contact-grid{grid-template-columns:1fr}
+ .contact-form{padding:24px}
+ .stats-grid{grid-template-columns:repeat(2,1fr)}
+ .footer-grid{grid-template-columns:repeat(2,1fr)}
+ .lang-toggle{top:16px;right:16px}
+ .lang-toggle button{padding:4px 8px;font-size:10px}
+ .chat-panel{right:12px;bottom:88px;width:calc(100vw - 24px);height:70vh}
+ .whatsapp-float{bottom:88px;right:12px;width:48px;height:48px}
+ .chat-toggle{bottom:24px;right:12px;width:48px;height:48px}
+ .chat-toggle svg{width:20px;height:20px}
+ .cta-banner{padding:48px 24px}
+}
+
+@media(max-width:480px){
+ .footer-grid{grid-template-columns:1fr}
+ .products-grid{grid-template-columns:1fr}
+ .benefits-grid{grid-template-columns:1fr}
+ .tech-grid{grid-template-columns:1fr}
+ .process-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ===== prefers-reduced-motion ===== */
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}
+ .reveal,.reveal-left,.reveal-right{opacity:1;transform:none;pointer-events:auto}
+}
+</style>
 </head>
 <body>
-<div id="scrollProgress"></div>
 
-<!-- navbar -->
-<nav class="navbar" id="navbar">
-  <div class="logo">✦ <span data-i18n="logo">GRAPHENE ROLLER</span></div>
-  <div class="nav-links" id="navLinks">
-    <a href="#hero" data-i18n="nav1">Home</a>
-    <a href="#benefits" data-i18n="nav2">Products</a>
-    <a href="#technology" data-i18n="nav3">Technology</a>
-    <a href="#about" data-i18n="nav4">About</a>
-    <a href="#contact" data-i18n="nav5">Contact</a>
+<!-- ===== SCROLL PROGRESS ===== -->
+<div id="scroll-progress"></div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+  <div class="container">
+    <a href="#hero" class="logo" aria-label="Graphene Roller home">✦ GRAPHENE ROLLER</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#hero" data-i18n="nav-home">Главная</a>
+      <a href="#benefits" data-i18n="nav-products">Продукты</a>
+      <a href="#technology" data-i18n="nav-tech">Технологии</a>
+      <a href="#about" data-i18n="nav-about">О нас</a>
+      <a href="#contact" data-i18n="nav-contact">Контакты</a>
+      <a href="#contact" class="nav-cta" data-i18n="nav-cta">Связаться</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
-  <button class="hamburger" id="hamburger" aria-label="menu"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- lang toggle -->
-<div class="lang-toggle">
-  <button data-lang="kz">KZ</button>
-  <button data-lang="ru" class="active">RU</button>
-  <button data-lang="en">EN</button>
+<!-- ===== LANGUAGE TOGGLE ===== -->
+<div class="lang-toggle" role="group" aria-label="Language selector">
+  <button data-lang="kk" aria-label="Қазақша">KZ</button>
+  <button data-lang="ru" class="active" aria-label="Русский">RU</button>
+  <button data-lang="en" aria-label="English">EN</button>
 </div>
 
-<!-- HERO -->
-<section id="hero">
-  <canvas id="threeCanvas"></canvas>
-  <div class="hero-content">
-    <h1 class="gradient-text" data-i18n="hero_title">Graphene Roller — Графеновые композитные ролики</h1>
-    <p data-i18n="hero_sub">Промышленные ролики из графенового композита. Сверхпрочность, морозостойкость, экономия.</p>
-    <a href="https://wa.me/77022655423" target="_blank" class="btn-whatsapp" data-i18n="hero_btn">📞 +7 702 265 5423</a>
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="container">
+    <div class="hero-badge reveal">
+      <span class="hero-badge-dot"></span>
+      <span data-i18n="hero-badge">Передовые графеновые технологии</span>
+    </div>
+    <h1 class="reveal">
+      <span data-i18n="hero-title-1">Графеновые</span><br>
+      <span class="gradient-text" data-i18n="hero-title-2">Композитные Валки</span>
+    </h1>
+    <p class="reveal" data-i18n="hero-sub">Революционные композитные валки с графеновым покрытием. Повышение износостойкости до 300% при экстремальных температурах.</p>
+    <div class="hero-buttons reveal">
+      <a href="https://wa.me/77022655423" target="_blank" rel="noopener" class="btn-primary btn-whatsapp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span data-i18n="hero-cta">Связаться через WhatsApp</span>
+      </a>
+      <a href="#products" class="btn-secondary">
+        <span data-i18n="hero-learn">Узнать больше</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
   </div>
-  <div class="scroll-indicator">SCROLL ↓</div>
+  <div class="scroll-indicator">
+    <span data-i18n="scroll">Листайте</span>
+    <div class="scroll-line"></div>
+  </div>
 </section>
 
-<!-- BENEFITS -->
-<section id="benefits"><div class="container">
-  <h2 data-i18n="benefits_title">Преимущества</h2>
-  <div class="grid-4">
-    <div class="benefit-card"><div class="num">+300%</div><h3 data-i18n="b1_title">Долговечность</h3><p data-i18n="b1_desc">Увеличение срока службы в 3 раза</p></div>
-    <div class="benefit-card"><div class="num">−40°C</div><h3 data-i18n="b2_title">Морозостойкость</h3><p data-i18n="b2_desc">Работа в экстремальных холодах</p></div>
-    <div class="benefit-card"><div class="num">8→24</div><h3 data-i18n="b3_title">Срок службы</h3><p data-i18n="b3_desc">от 8 до 24 месяцев эксплуатации</p></div>
-    <div class="benefit-card"><div class="num">40%</div><h3 data-i18n="b4_title">Экономия</h3><p data-i18n="b4_desc">Снижение затрат на замену</p></div>
-  </div>
-</div></section>
-<div class="section-divider"></div>
-
-<!-- PRODUCTS -->
-<section id="products"><div class="container">
-  <h2 data-i18n="prod_title">Продукция</h2>
-  <div class="grid-3">
-    <div class="product-card"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=300&fit=crop" alt="roller"><div class="tags"><span class="tag">Bestseller</span><span class="tag spec">D50</span></div><h3>Graphene Pro</h3><p data-i18n="prod1">Универсальный композит</p></div>
-    <div class="product-card"><img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=400&h=300&fit=crop" alt="roller heavy"><div class="tags"><span class="tag">Heavy Duty</span><span class="tag spec">D80</span></div><h3>Graphene Max</h3><p data-i18n="prod2">Для высоких нагрузок</p></div>
-    <div class="product-card"><img src="https://images.unsplash.com/photo-1563770660941-20978e870e26?w=400&h=300&fit=crop" alt="roller smart"><div class="tags"><span class="tag">Smart</span><span class="tag spec">IoT</span></div><h3>Graphene Sense</h3><p data-i18n="prod3">Встроенный мониторинг</p></div>
-  </div>
-</div></section>
-<div class="section-divider"></div>
-
-<!-- TECHNOLOGY -->
-<section id="technology"><div class="container">
-  <h2 data-i18n="tech_title">Технология</h2>
-  <div class="grid-4-tech">
-    <div class="tech-card"><span class="bg-number">01</span><h3 data-i18n="t1">Материаловедение</h3><p data-i18n="t1_desc">Графеновые композиты</p></div>
-    <div class="tech-card"><span class="bg-number">02</span><h3 data-i18n="t2">Нанопокрытие</h3><p data-i18n="t2_desc">CVD алмазное напыление</p></div>
-    <div class="tech-card"><span class="bg-number">03</span><h3 data-i18n="t3">Точность</h3><p data-i18n="t3_desc">Допуски до 0.01 мм</p></div>
-    <div class="tech-card"><span class="bg-number">04</span><h3 data-i18n="t4">Контроль</h3><p data-i18n="t4_desc">ISO 9001:2025</p></div>
-  </div>
-</div></section>
-<div class="section-divider"></div>
-
-<!-- STATS / ABOUT -->
-<section id="about"><div class="container">
-  <div class="stats-grid">
-    <div class="stat-item"><div class="number" data-count="250">0+</div><div class="label" data-i18n="stat1">установок</div></div>
-    <div class="stat-item"><div class="number" data-count="50">0+</div><div class="label" data-i18n="stat2">клиентов</div></div>
-    <div class="stat-item"><div class="number" data-count="15">0+</div><div class="label" data-i18n="stat3">стран</div></div>
-    <div class="stat-item"><div class="number">ISO</div><div class="label" data-i18n="stat4">сертификат</div></div>
-  </div>
-  <div class="about-text" data-i18n="about_text">Graphene Roller — мировой лидер в производстве графеновых композитных роликов для тяжелой промышленности. Наши решения работают в условиях Крайнего Севера, пустынь и высокотехнологичных производств.</div>
-</div></section>
-<div class="section-divider"></div>
-
-<!-- PROCESS -->
-<section id="process"><div class="container">
-  <h2 data-i18n="process_title">Процесс</h2>
-  <div class="process-steps">
-    <div class="step-card"><div class="step-num">01</div><h4 data-i18n="p1">Материал</h4><span class="arrow">→</span></div>
-    <div class="step-card"><div class="step-num">02</div><h4 data-i18n="p2">CVD</h4><span class="arrow">→</span></div>
-    <div class="step-card"><div class="step-num">03</div><h4 data-i18n="p3">Покрытие</h4><span class="arrow">→</span></div>
-    <div class="step-card"><div class="step-num">04</div><h4 data-i18n="p4">Тест</h4><span class="arrow">→</span></div>
-    <div class="step-card"><div class="step-num">05</div><h4 data-i18n="p5">Сборка</h4><span class="arrow">→</span></div>
-    <div class="step-card"><div class="step-num">06</div><h4 data-i18n="p6">Доставка</h4><span class="arrow">→</span></div>
-  </div>
-</div></section>
-<div class="section-divider"></div>
-
-<!-- GLOBAL -->
-<section id="global"><div class="container">
-  <h2 data-i18n="global_title">Глобальное присутствие</h2>
-  <div class="country-tags">
-    <span class="country-tag">Kazakhstan</span><span class="country-tag">Russia</span><span class="country-tag">UAE</span>
-    <span class="country-tag">Germany</span><span class="country-tag">USA</span><span class="country-tag">China</span>
-    <span class="country-tag">Turkey</span><span class="country-tag">India</span><span class="country-tag">South Korea</span>
-  </div>
-</div></section>
-<div class="section-divider"></div>
-
-<!-- CONTACT -->
-<section id="contact"><div class="container">
-  <h2 data-i18n="contact_title">Свяжитесь с нами</h2>
-  <div class="contact-grid">
-    <div class="contact-form">
-      <input type="text" placeholder="Имя" data-i18n-placeholder="name_ph">
-      <input type="email" placeholder="Email">
-      <input type="text" placeholder="Телефон">
-      <textarea rows="3" placeholder="Сообщение"></textarea>
-      <button class="btn-whatsapp" style="background:#00c8ff; color:#0a0a0f;" data-i18n="send_btn">Отправить</button>
+<!-- ===== BENEFITS ===== -->
+<section id="benefits">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag" data-i18n="benefits-tag">Преимущества</span>
+      <h2 data-i18n="benefits-title">Почему Graphene Roller?</h2>
+      <p data-i18n="benefits-sub">Ключевые показатели эффективности наших графеновых композитных валков</p>
     </div>
-    <div class="contact-info-cards">
-      <div class="info-card"><h4>WhatsApp</h4>+7 702 265 5423</div>
-      <div class="info-card"><h4>Email</h4>info@grapheneroller.com</div>
-      <div class="info-card"><h4 data-i18n="loc">Адрес</h4>Astana, KZ</div>
-      <div class="info-card"><h4 data-i18n="hours">Часы</h4>24/7</div>
+    <div class="benefits-grid">
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00c8ff" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3 data-i18n="benefit-1-num">+300%</h3>
+        <p data-i18n="benefit-1-text">Повышенная износостойкость по сравнению с традиционными валками</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#64ffda" stroke-width="2"><path d="M12 2a4 4 0 014 4c0 2-1 3-4 7-3-4-4-5-4-7a4 4 0 014-4z"/><path d="M12 22v-6"/></svg>
+        </div>
+        <h3 data-i18n="benefit-2-num">−40°C</h3>
+        <p data-i18n="benefit-2-text">Работоспособность при экстремально низких температурах</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00c8ff" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3 data-i18n="benefit-3-num">8→24 мес.</h3>
+        <p data-i18n="benefit-3-text">Увеличенный срок службы — до 24 месяцев эксплуатации</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#64ffda" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <h3 data-i18n="benefit-4-num">40% экономии</h3>
+        <p data-i18n="benefit-4-text">Снижение затрат на обслуживание и замену</p>
+      </div>
     </div>
   </div>
-  <div class="map-placeholder" data-i18n="map_ph">📍 Карта загружается</div>
-</div></section>
-<div class="section-divider"></div>
+</section>
 
-<!-- CTA BANNER -->
-<section><div class="container">
-  <div class="cta-banner">
-    <h2 data-i18n="cta_title">Готовы революционизировать производство?</h2>
-    <a href="https://wa.me/77022655423" target="_blank" class="btn-whatsapp">📞 WhatsApp +7 702 265 5423</a>
+<!-- ===== PRODUCTS ===== -->
+<section id="products" style="background:rgba(255,255,255,0.02);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag" data-i18n="products-tag">Продукция</span>
+      <h2 data-i18n="products-title">Наши валки</h2>
+      <p data-i18n="products-sub">Серия графеновых композитных валков для различных промышленных применений</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card reveal" data-tilt>
+        <div class="product-card-image">
+          <img src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=600&q=80" alt="Graphene Roller GR-2000 industrial roller" loading="lazy">
+          <span class="product-tag bestseller" data-i18n="tag-bestseller">Хит продаж</span>
+        </div>
+        <div class="product-card-body">
+          <h3 data-i18n="product-1-name">GR-2000 Pro</h3>
+          <p data-i18n="product-1-desc">Универсальный графеновый композитный валок для пищевой и упаковочной промышленности.</p>
+          <div class="product-specs">
+            <span data-i18n="spec-diameter">⌀ 200 мм</span>
+            <span data-i18n="spec-length">L 2000 мм</span>
+            <span data-i18n="spec-temp">−40..+200°C</span>
+            <span data-i18n="spec-hardness">HRC 62</span>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal" data-tilt>
+        <div class="product-card-image">
+          <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&q=80" alt="Graphene Roller GH-5000 heavy duty roller" loading="lazy">
+          <span class="product-tag heavy-duty" data-i18n="tag-heavy">Тяжелая серия</span>
+        </div>
+        <div class="product-card-body">
+          <h3 data-i18n="product-2-name">GH-5000 Heavy Duty</h3>
+          <p data-i18n="product-2-desc">Усиленный валок для горнодобывающей и металлургической промышленности с повышенной нагрузкой.</p>
+          <div class="product-specs">
+            <span data-i18n="spec-diameter-2">⌀ 350 мм</span>
+            <span data-i18n="spec-length-2">L 5000 мм</span>
+            <span data-i18n="spec-temp-2">−50..+300°C</span>
+            <span data-i18n="spec-hardness-2">HRC 68</span>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal" data-tilt>
+        <div class="product-card-image">
+          <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" alt="Graphene Roller GS-1000 Smart precision roller" loading="lazy">
+          <span class="product-tag smart" data-i18n="tag-smart">Smart</span>
+        </div>
+        <div class="product-card-body">
+          <h3 data-i18n="product-3-name">GS-1000 Smart</h3>
+          <p data-i18n="product-3-desc">Прецизионный валок со встроенными датчиками для контроля температуры и износа в реальном времени.</p>
+          <div class="product-specs">
+            <span data-i18n="spec-diameter-3">⌀ 150 мм</span>
+            <span data-i18n="spec-length-3">L 1000 мм</span>
+            <span data-i18n="spec-temp-3">−30..+180°C</span>
+            <span data-i18n="spec-iot">IoT Ready</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div></section>
+</section>
 
-<!-- FOOTER -->
-<footer style="background: rgba(255,255,255,0.02);"><div class="container">
-  <div class="footer-grid">
-    <div class="footer-col"><h4 data-i18n="f_company">Компания</h4><a href="#" data-i18n="f_about">О нас</a><a href="#">Blog</a></div>
-    <div class="footer-col"><h4 data-i18n="f_products">Продукты</h4><a href="#">Pro</a><a href="#">Max</a><a href="#">Sense</a></div>
-    <div class="footer-col"><h4 data-i18n="f_support">Поддержка</h4><a href="#">FAQ</a><a href="#">Документация</a></div>
-    <div class="footer-col"><h4 data-i18n="f_legal">Правовое</h4><a href="#">Конфиденциальность</a><div class="social-icons"><span>𝕏</span><span>📘</span><span>📸</span></div></div>
+<!-- ===== TECHNOLOGY ===== -->
+<section id="technology">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag" data-i18n="tech-tag">Технологии</span>
+      <h2 data-i18n="tech-title">Наши технологии</h2>
+      <p data-i18n="tech-sub">Инновационные разработки в области графеновых композитных материалов</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card reveal">
+        <div class="tech-number">01</div>
+        <h3 data-i18n="tech-1-title">Материаловедение</h3>
+        <p data-i18n="tech-1-desc">Собственные разработки в области графеновых композитов с многослойной структурой для максимальной прочности.</p>
+      </div>
+      <div class="tech-card reveal">
+        <div class="tech-number">02</div>
+        <h3 data-i18n="tech-2-title">Нано-покрытие</h3>
+        <p data-i18n="tech-2-desc">CVD-нанесение графенового покрытия толщиной от 3 нм с равномерным распределением по всей поверхности.</p>
+      </div>
+      <div class="tech-card reveal">
+        <div class="tech-number">03</div>
+        <h3 data-i18n="tech-3-title">Прецизионность</h3>
+        <p data-i18n="tech-3-desc">Точность обработки до 0.001 мм на станках с ЧПУ 7-го поколения с лазерной калибровкой.</p>
+      </div>
+      <div class="tech-card reveal">
+        <div class="tech-number">04</div>
+        <h3 data-i18n="tech-4-title">Контроль качества</h3>
+        <p data-i18n="tech-4-desc">Многоступенчатый контроль: спектроскопия, термотестирование, механические испытания каждого валка.</p>
+      </div>
+    </div>
   </div>
-  <div class="copyright">© 2025 Graphene Roller</div>
-</div></footer>
+</section>
 
-<!-- floating whatsapp + chatbot -->
-<a href="https://wa.me/77022655423" target="_blank" class="float-wa" aria-label="WhatsApp">💬</a>
-<button class="chatbot-toggle" id="chatbotToggle" aria-label="Chat">🤖</button>
-<div class="chatbot-panel" id="chatbotPanel">
-  <div class="chatbot-msg">👋 Здравствуйте! Чем помочь?</div>
-  <div class="quick-reply">
-    <button data-i18n="q1">Цены</button>
-    <button data-i18n="q2">Доставка</button>
-    <button data-i18n="q3">Каталог</button>
-    <button data-i18n="q4">Скидка</button>
-    <button data-i18n="q5">Контакты</button>
+<!-- ===== ABOUT + STATS ===== -->
+<section id="about" style="background:rgba(255,255,255,0.02);">
+  <div class="container">
+    <div class="about-wrapper">
+      <div class="about-image reveal-left">
+        <img src="https://images.unsplash.com/photo-1581092335871-4c7c66d4b0e3?w=800&q=80" alt="Modern manufacturing facility graphene production" loading="lazy">
+      </div>
+      <div class="about-content reveal-right">
+        <span class="section-tag" data-i18n="about-tag">О компании</span>
+        <h2 data-i18n="about-title">Лидер в производстве графеновых валков</h2>
+        <p data-i18n="about-text">Graphene Roller — международная компания, специализирующаяся на производстве графеновых композитных валков. Мы объединяем передовые нанотехнологии с многолетним опытом в машиностроении для создания продуктов, превосходящих отраслевые стандарты.</p>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number" data-count="250">0</div>
+            <div class="stat-label" data-i18n="stat-installations">Установок</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="50">0</div>
+            <div class="stat-label" data-i18n="stat-clients">Клиентов</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="15">0</div>
+            <div class="stat-label" data-i18n="stat-countries">Стран</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="100">0</div>
+            <div class="stat-label" data-i18n="stat-iso">ISO сертификат</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section id="process">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag" data-i18n="process-tag">Процесс</span>
+      <h2 data-i18n="process-title">Как мы создаем ваши валки</h2>
+      <p data-i18n="process-sub">От сырья до готового продукта — 6 этапов производства</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step reveal">
+        <div class="step-num">1</div>
+        <h4 data-i18n="step-1-title">Материалы</h4>
+        <p data-i18n="step-1-desc">Отбор высокочистого графита и стальных основ</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">2</div>
+        <h4 data-i18n="step-2-title">CVD синтез</h4>
+        <p data-i18n="step-2-desc">Химическое осаждение графена из газовой фазы</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">3</div>
+        <h4 data-i18n="step-3-title">Покрытие</h4>
+        <p data-i18n="step-3-desc">Многослойное нанесение графенового композита</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">4</div>
+        <h4 data-i18n="step-4-title">Тестирование</h4>
+        <p data-i18n="step-4-desc">Спектроскопия и механические испытания</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">5</div>
+        <h4 data-i18n="step-5-title">Сборка</h4>
+        <p data-i18n="step-5-desc">Прецизионная сборка и балансировка</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">6</div>
+        <h4 data-i18n="step-6-title">Доставка</h4>
+        <p data-i18n="step-6-desc">Упаковка и доставка по всему миру</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GLOBAL PRESENCE ===== -->
+<section id="global" style="background:rgba(255,255,255,0.02);">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag" data-i18n="global-tag">Присутствие</span>
+      <h2 data-i18n="global-title">Глобальное присутствие</h2>
+      <p data-i18n="global-sub">Мы работаем с клиентами по всему миру</p>
+    </div>
+    <div class="global-tags reveal">
+      <span class="global-tag">🇰🇿 <span data-i18n="country-kz">Казахстан</span></span>
+      <span class="global-tag">🇷🇺 <span data-i18n="country-ru">Россия</span></span>
+      <span class="global-tag">🇦🇪 <span data-i18n="country-uae">ОАЭ</span></span>
+      <span class="global-tag">🇩🇪 <span data-i18n="country-de">Германия</span></span>
+      <span class="global-tag">🇺🇸 <span data-i18n="country-us">США</span></span>
+      <span class="global-tag">🇨🇳 <span data-i18n="country-cn">Китай</span></span>
+      <span class="global-tag">🇹🇷 <span data-i18n="country-tr">Турция</span></span>
+      <span class="global-tag">🇮🇳 <span data-i18n="country-in">Индия</span></span>
+      <span class="global-tag">🇰🇷 <span data-i18n="country-kr">Южная Корея</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag" data-i18n="contact-tag">Контакты</span>
+      <h2 data-i18n="contact-title">Свяжитесь с нами</h2>
+      <p data-i18n="contact-sub">Отправьте запрос и получите консультацию по нашим продуктам</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-form reveal">
+        <form id="contactForm" novalidate>
+          <div class="form-group">
+            <label for="formName" data-i18n="form-name">Имя</label>
+            <input type="text" id="formName" name="name" required placeholder="Ваше имя" data-i18n-placeholder="form-name-ph">
+          </div>
+          <div class="form-group">
+            <label for="formEmail" data-i18n="form-email">Email</label>
+            <input type="email" id="formEmail" name="email" required placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label for="formPhone" data-i18n="form-phone">Телефон</label>
+            <input type="tel" id="formPhone" name="phone" placeholder="+7 (700) 123-45-67">
+          </div>
+          <div class="form-group">
+            <label for="formMessage" data-i18n="form-message">Сообщение</label>
+            <textarea id="formMessage" name="message" required placeholder="Опишите ваш запрос..." data-i18n-placeholder="form-msg-ph"></textarea>
+          </div>
+          <button type="submit" class="form-submit" data-i18n="form-submit">Отправить запрос</button>
+          <div class="form-success" id="formSuccess" data-i18n="form-success">Спасибо! Мы свяжемся с вами в ближайшее время.</div>
+        </form>
+      </div>
+      <div class="contact-info reveal">
+        <a href="https://wa.me/77022655423" target="_blank" rel="noopener" class="contact-info-card">
+          <div class="contact-info-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+          <div class="contact-info-text">
+            <h4>WhatsApp</h4>
+            <p>+7 (702) 265-5423</p>
+          </div>
+        </a>
+        <div class="contact-info-card">
+          <div class="contact-info-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00c8ff" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-info-text">
+            <h4 data-i18n="contact-email">Email</h4>
+            <p>info@grapheneroller.com</p>
+          </div>
+        </div>
+        <div class="contact-info-card">
+          <div class="contact-info-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64ffda" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="contact-info-text">
+            <h4 data-i18n="contact-location">Адрес</h4>
+            <p data-i18n="contact-address">Астана, Казахстан, пр. Республики 15</p>
+          </div>
+        </div>
+        <div class="contact-info-card">
+          <div class="contact-info-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00c8ff" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="contact-info-text">
+            <h4 data-i18n="contact-hours">Часы работы</h4>
+            <p data-i18n="contact-hours-text">Пн-Пт: 9:00 — 18:00</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA BANNER ===== -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-banner reveal">
+      <h2 data-i18n="cta-title">Готовы повысить эффективность?</h2>
+      <p data-i18n="cta-sub">Свяжитесь с нами сегодня и получите индивидуальное коммерческое предложение</p>
+      <a href="https://wa.me/77022655423" target="_blank" rel="noopener" class="btn-primary btn-whatsapp" style="display:inline-flex">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="#fff"/></svg>
+        <span data-i18n="cta-btn">Написать в WhatsApp</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4 class="logo" style="font-size:16px;margin-bottom:16px;background:linear-gradient(135deg,#00c8ff,#64ffda);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">✦ GRAPHENE ROLLER</h4>
+        <p data-i18n="footer-desc">Инновационные графеновые композитные валки для промышленности. Качество, подтвержденное международными сертификатами.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#888"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          <a href="#" aria-label="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="#888"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="#888"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer-products-title">Продукция</h4>
+        <ul>
+          <li><a href="#" data-i18n="footer-gr2000">GR-2000 Pro</a></li>
+          <li><a href="#" data-i18n="footer-gh5000">GH-5000 Heavy Duty</a></li>
+          <li><a href="#" data-i18n="footer-gs1000">GS-1000 Smart</a></li>
+          <li><a href="#" data-i18n="footer-custom">Индивидуальные заказы</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer-support-title">Поддержка</h4>
+        <ul>
+          <li><a href="#" data-i18n="footer-docs">Техническая документация</a></li>
+          <li><a href="#" data-i18n="footer-warranty">Гарантия</a></li>
+          <li><a href="#" data-i18n="footer-service">Сервисное обслуживание</a></li>
+          <li><a href="#" data-i18n="footer-faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer-legal-title">Правовая информация</h4>
+        <ul>
+          <li><a href="#" data-i18n="footer-privacy">Политика конфиденциальности</a></li>
+          <li><a href="#" data-i18n="footer-terms">Условия использования</a></li>
+          <li><a href="#" data-i18n="footer-cookies">Cookie</a></li>
+          <li><a href="#" data-i18n="footer-compliance">Соответствие стандартам</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer-copy">© 2026 Graphene Roller. Все права защищены.</p>
+      <div class="footer-bottom-links">
+        <a href="#" data-i18n="footer-privacy">Конфиденциальность</a>
+        <a href="#" data-i18n="footer-terms">Условия</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== WHATSAPP FLOATING ===== -->
+<a href="https://wa.me/77022655423" target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- ===== CHATBOT ===== -->
+<div class="chat-toggle" id="chatToggle" aria-label="Open chat" role="button" tabindex="0">
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 5.935 2 10.769c0 2.479 1.163 4.7 3.004 6.202l.387 3.62 4.076-1.941c1.466.521 3.07.888 4.533.888 5.523 0 10-3.935 10-8.769S17.523 2 12 2z"/></svg>
+</div>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <h3 data-i18n="chat-title">Чат поддержки</h3>
+    <div class="chat-close" id="chatClose" role="button" tabindex="0" aria-label="Close chat">
+      <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </div>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg bot" data-i18n="chat-greeting">Здравствуйте! Чем мы можем вам помочь? Выберите интересующий вас вопрос.</div>
+  </div>
+  <div class="chat-quick-reply show" id="chatQuickReply">
+    <button data-chat-query="prices" data-i18n="chat-q-prices">Цены</button>
+    <button data-chat-query="delivery" data-i18n="chat-q-delivery">Доставка</button>
+    <button data-chat-query="catalog" data-i18n="chat-q-catalog">Каталог</button>
+    <button data-chat-query="discount" data-i18n="chat-q-discount">Скидки</button>
+    <button data-chat-query="contact" data-i18n="chat-q-contact">Контакты</button>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" id="chatInput" placeholder="Введите сообщение..." data-i18n-placeholder="chat-input-ph" autocomplete="off">
+    <button class="chat-send" id="chatSend" aria-label="Send message">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-  // ===== THREE.JS hexagon particles =====
-  (function initThree(){
-    const canvas = document.getElementById('threeCanvas');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
-    camera.position.z = 30;
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+/* ===== THREE.JS HEXAGON PARTICLE BACKGROUND ===== */
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  if(!canvas) return;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    const geometry = new THREE.CylinderGeometry(0.6, 0.6, 0.1, 6);
-    const material = new THREE.MeshStandardMaterial({ color: 0x00c8ff, emissive: 0x114466, roughness: 0.3, metalness: 0.2 });
-    const particles = [];
-    for(let i=0;i<160;i++){
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set((Math.random()-0.5)*70, (Math.random()-0.5)*50, (Math.random()-0.5)*40-10);
-      mesh.rotation.x = Math.random()*Math.PI;
-      mesh.rotation.y = Math.random()*Math.PI;
-      mesh.scale.setScalar(0.3+Math.random()*0.8);
-      scene.add(mesh);
-      particles.push({ mesh, speed: 0.002+Math.random()*0.005, rotY: Math.random()*0.02 });
-    }
-    const ambient = new THREE.AmbientLight(0x404060);
-    scene.add(ambient);
-    const light = new THREE.DirectionalLight(0xffffff, 0.8);
-    light.position.set(1,2,1);
-    scene.add(light);
-    const light2 = new THREE.PointLight(0x00c8ff, 0.5, 50);
-    light2.position.set(-10,10,10);
-    scene.add(light2);
+  const hexCount = 200;
+  const geometry = new THREE.BufferGeometry();
+  const positions = new Float32Array(hexCount * 3);
+  const sizes = new Float32Array(hexCount);
+  const speeds = new Float32Array(hexCount);
+  const rotations = new Float32Array(hexCount);
 
-    function animate(){
-      particles.forEach(p => {
-        p.mesh.rotation.y += p.rotY;
-        p.mesh.position.y += Math.sin(Date.now()*p.speed)*0.004;
-      });
-      renderer.render(scene, camera);
-      requestAnimationFrame(animate);
-    }
-    animate();
-    window.addEventListener('resize', ()=>{
-      camera.aspect = window.innerWidth/window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  })();
-
-  // ===== NAVBAR hide/show =====
-  let lastScroll = 0;
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', ()=>{
-    const st = window.pageYOffset || document.documentElement.scrollTop;
-    if(st > lastScroll && st > 80) navbar.classList.add('hidden');
-    else navbar.classList.remove('hidden');
-    lastScroll = st;
-    // progress
-    const h = document.documentElement.scrollHeight - window.innerHeight;
-    document.getElementById('scrollProgress').style.width = (st/h)*100+'%';
-  });
-
-  // hamburger
-  document.getElementById('hamburger').addEventListener('click', ()=>{
-    document.getElementById('navLinks').classList.toggle('open');
-  });
-
-  // ===== language system =====
-  const langData = {
-    kz: {
-      logo:'ГРАФЕН РОЛЛИК', nav1:'Басты', nav2:'Өнімдер', nav3:'Технология', nav4:'Біз туралы', nav5:'Байланыс',
-      hero_title:'Graphene Roller — Графенді композитті роликтер', hero_sub:'Өнеркәсіптік графенді композитті роликтер. Өте берік, аязға төзімді, үнемді.',
-      hero_btn:'📞 +7 702 265 5423',
-      benefits_title:'Артықшылықтар', b1_title:'Беріктік', b1_desc:'Қызмет мерзімі 3 есе артады', b2_title:'Аязға төзімді', b2_desc:'−40°C жұмыс', b3_title:'Қызмет мерзімі', b3_desc:'8 айдан 24 айға дейін', b4_title:'Үнемдеу', b4_desc:'Шығындар 40% төмен',
-      prod_title:'Өнімдер', prod1:'Әмбебап композит', prod2:'Жоғары жүктемеге арналған', prod3:'Кіріктірілген мониторинг',
-      tech_title:'Технология', t1:'Материалтану', t1_desc:'Графен композиттері', t2:'Наножабын', t2_desc:'CVD алмаз жабын', t3:'Дәлдік', t3_desc:'0.01 мм дәлдік', t4:'Бақылау', t4_desc:'ISO 9001:2025',
-      stat1:'орнату', stat2:'клиент', stat3:'ел', stat4:'сертификат',
-      about_text:'Graphene Roller — ауыр өнеркәсіпке арналған графенді композитті роликтердің әлемдік көшбасшысы.',
-      process_title:'Процесс', p1:'Материал', p2:'CVD', p3:'Жабын', p4:'Тест', p5:'Құрастыру', p6:'Жеткізу',
-      global_title:'Ғаламдық қатысу',
-      contact_title:'Байланыс', name_ph:'Аты', send_btn:'Жіберу', loc:'Мекенжай', hours:'Сағат', map_ph:'📍 Карта жүктелуде',
-      cta_title:'Өндірісті түбегейлі өзгертуге дайынсыз ба?',
-      f_company:'Компания', f_about:'Біз туралы', f_products:'Өнімдер', f_support:'Қолдау', f_legal:'Құқықтық',
-      q1:'Бағалар', q2:'Жеткізу', q3:'Каталог', q4:'Жеңілдік', q5:'Байланыс'
-    },
-    ru: {
-      logo:'GRAPHENE ROLLER', nav1:'Главная', nav2:'Продукты', nav3:'Технология', nav4:'О нас', nav5:'Контакты',
-      hero_title:'Graphene Roller — Графеновые композитные ролики', hero_sub:'Промышленные ролики из графенового композита. Сверхпрочность, морозостойкость, экономия.',
-      hero_btn:'📞 +7 702 265 5423',
-      benefits_title:'Преимущества', b1_title:'Долговечность', b1_desc:'Увеличение срока службы в 3 раза', b2_title:'Морозостойкость', b2_desc:'Работа при −40°C', b3_title:'Срок службы', b3_desc:'от 8 до 24 месяцев', b4_title:'Экономия', b4_desc:'Снижение затрат на 40%',
-      prod_title:'Продукция', prod1:'Универсальный композит', prod2:'Для высоких нагрузок', prod3:'Встроенный мониторинг',
-      tech_title:'Технология', t1:'Материаловедение', t1_desc:'Графеновые композиты', t2:'Нанопокрытие', t2_desc:'CVD алмазное напыление', t3:'Точность', t3_desc:'Допуски до 0.01 мм', t4:'Контроль', t4_desc:'ISO 9001:2025',
-      stat1:'установок', stat2:'клиентов', stat3:'стран', stat4:'сертификат',
-      about_text:'Graphene Roller — мировой лидер в производстве графеновых композитных роликов для тяжелой промышленности.',
-      process_title:'Процесс', p1:'Материал', p2:'CVD', p3:'Покрытие', p4:'Тест', p5:'Сборка', p6:'Доставка',
-      global_title:'Глобальное присутствие',
-      contact_title:'Свяжитесь с нами', name_ph:'Имя', send_btn:'Отправить', loc:'Адрес', hours:'Часы', map_ph:'📍 Карта загружается',
-      cta_title:'Готовы революционизировать производство?',
-      f_company:'Компания', f_about:'О нас', f_products:'Продукты', f_support:'Поддержка', f_legal:'Правовое',
-      q1:'Цены', q2:'Доставка', q3:'Каталог', q4:'Скидка', q5:'Контакты'
-    },
-    en: {
-      logo:'GRAPHENE ROLLER', nav1:'Home', nav2:'Products', nav3:'Technology', nav4:'About', nav5:'Contact',
-      hero_title:'Graphene Roller — Graphene Composite Rollers', hero_sub:'Industrial graphene composite rollers. Extreme durability, cold resistance, cost saving.',
-      hero_btn:'📞 +7 702 265 5423',
-      benefits_title:'Benefits', b1_title:'Durability', b1_desc:'3x longer service life', b2_title:'Cold Resistance', b2_desc:'Operates at −40°C', b3_title:'Lifespan', b3_desc:'8 to 24 months', b4_title:'Savings', b4_desc:'40% cost reduction',
-      prod_title:'Products', prod1:'Universal composite', prod2:'Heavy duty', prod3:'Smart monitoring',
-      tech_title:'Technology', t1:'Material Science', t1_desc:'Graphene composites', t2:'Nano Coating', t2_desc:'CVD diamond coating', t3:'Precision', t3_desc:'Tolerances up to 0.01mm', t4:'Quality Control', t4_desc:'ISO 9001:2025',
-      stat1:'installations', stat2:'clients', stat3:'countries', stat4:'certified',
-      about_text:'Graphene Roller is a global leader in graphene composite rollers for heavy industry.',
-      process_title:'Process', p1:'Material', p2:'CVD', p3:'Coating', p4:'Testing', p5:'Assembly', p6:'Delivery',
-      global_title:'Global Presence',
-      contact_title:'Contact Us', name_ph:'Name', send_btn:'Send', loc:'Location', hours:'Hours', map_ph:'📍 Map loading',
-      cta_title:'Ready to revolutionize your production?',
-      f_company:'Company', f_about:'About', f_products:'Products', f_support:'Support', f_legal:'Legal',
-      q1:'Prices', q2:'Delivery', q3:'Catalog', q4:'Discount', q5:'Contact'
-    }
-  };
-
-  function applyLang(lang){
-    const data = langData[lang] || langData.ru;
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if(data[key]) {
-        if(el.tagName === 'BUTTON' && el.classList.contains('btn-whatsapp')) el.innerHTML = data[key];
-        else el.textContent = data[key];
-      }
-    });
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-      const key = el.getAttribute('data-i18n-placeholder');
-      if(data[key]) el.placeholder = data[key];
-    });
-    // quick replies
-    document.querySelectorAll('.quick-reply button').forEach((btn, idx) => {
-      const keys = ['q1','q2','q3','q4','q5'];
-      if(keys[idx] && data[keys[idx]]) btn.textContent = data[keys[idx]];
-    });
+  for(let i = 0; i < hexCount; i++){
+    positions[i*3] = (Math.random() - 0.5) * 40;
+    positions[i*3+1] = (Math.random() - 0.5) * 40;
+    positions[i*3+2] = (Math.random() - 20) * 2;
+    sizes[i] = Math.random() * 0.4 + 0.1;
+    speeds[i] = Math.random() * 0.002 + 0.001;
+    rotations[i] = Math.random() * Math.PI * 2;
   }
 
-  document.querySelectorAll('.lang-toggle button').forEach(btn => {
-    btn.addEventListener('click', ()=>{
-      document.querySelectorAll('.lang-toggle button').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      const lang = btn.getAttribute('data-lang');
-      applyLang(lang);
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+  geometry.setAttribute('rotation', new THREE.BufferAttribute(rotations, 1));
+
+  // Create hexagon shape
+  const shape = new THREE.Shape();
+  const hexR = 0.5;
+  for(let i = 0; i < 6; i++){
+    const angle = (i / 6) * Math.PI * 2 - Math.PI / 2;
+    const x = Math.cos(angle) * hexR;
+    const y = Math.sin(angle) * hexR;
+    if(i === 0) shape.moveTo(x, y);
+    else shape.lineTo(x, y);
+  }
+  shape.closePath();
+
+  const material = new THREE.MeshBasicMaterial({
+    color: 0x00c8ff,
+    transparent: true,
+    opacity: 0.3,
+    side: THREE.DoubleSide,
+    depthWrite: false
+  });
+
+  const hexagons = [];
+  for(let i = 0; i < hexCount; i++){
+    const mesh = new THREE.Mesh(shape, material.clone());
+    const scale = sizes[i] * 0.8;
+    mesh.scale.set(scale, scale, 1);
+    mesh.position.set(positions[i*3], positions[i*3+1], positions[i*3+2]);
+    mesh.rotation.z = rotations[i];
+    mesh.userData = { speed: speeds[i], rotSpeed: (Math.random() - 0.5) * 0.002, posY: positions[i*3+1] };
+    scene.add(mesh);
+    hexagons.push(mesh);
+  }
+
+  camera.position.z = 12;
+
+  let mouseX = 0, mouseY = 0;
+  let targetX = 0, targetY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+    mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+  });
+
+  function animate(){
+    requestAnimationFrame(animate);
+    targetX += (mouseX * 0.3 - targetX) * 0.02;
+    targetY += (mouseY * 0.3 - targetY) * 0.02;
+
+    hexagons.forEach((hex, i) => {
+      hex.position.y += Math.sin(Date.now() * hex.userData.speed + i) * 0.002;
+      hex.rotation.z += hex.userData.rotSpeed;
+      hex.position.x += (targetX * (hex.position.z * 0.05 + 0.5)) * 0.005;
+      hex.position.y += (targetY * (hex.position.z * 0.05 + 0.5)) * 0.005;
+    });
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  });
+})();
+
+/* ===== NAVBAR SCROLL BEHAVIOR ===== */
+(function(){
+  const navbar = document.getElementById('navbar');
+  let lastScroll = 0;
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if(!ticking){
+      window.requestAnimationFrame(() => {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        if(currentScroll > 80){
+          if(currentScroll > lastScroll){
+            navbar.classList.add('hidden');
+          } else {
+            navbar.classList.remove('hidden');
+          }
+        } else {
+          navbar.classList.remove('hidden');
+        }
+        lastScroll = currentScroll;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+})();
+
+/* ===== SCROLL PROGRESS ===== */
+(function(){
+  const bar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    bar.style.width = progress + '%';
+  });
+})();
+
+/* ===== MOBILE HAMBURGER ===== */
+(function(){
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('open');
+    const expanded = hamburger.getAttribute('aria-expanded') === 'true' ? 'false' : 'true';
+    hamburger.setAttribute('aria-expanded', expanded);
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      navLinks.classList.remove('open');
     });
   });
-  applyLang('ru');
+})();
 
-  // ===== counter animation =====
-  const counters = document.querySelectorAll('.stat-item .number[data-count]');
-  const observer = new IntersectionObserver((entries)=>{
+/* ===== INTERSECTION OBSERVER REVEAL ===== */
+(function(){
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+})();
+
+/* ===== COUNTER ANIMATION ===== */
+(function(){
+  const counterObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if(entry.isIntersecting){
         const el = entry.target;
         const target = parseInt(el.getAttribute('data-count'));
         if(!target) return;
         let current = 0;
-        const step = Math.ceil(target/60);
-        const timer = setInterval(()=>{
-          current += step;
-          if(current >= target) { current = target; clearInterval(timer); }
-          el.textContent = current+'+';
-        }, 25);
-        observer.unobserve(el);
+        const increment = Math.ceil(target / 40);
+        const timer = setInterval(() => {
+          current += increment;
+          if(current >= target){
+            current = target;
+            clearInterval(timer);
+          }
+          el.textContent = current + (target === 100 ? '%' : '+');
+        }, 40);
+        counterObserver.unobserve(el);
       }
     });
   }, { threshold: 0.5 });
-  counters.forEach(c => observer.observe(c));
 
-  // ===== intersection animations =====
-  document.querySelectorAll('.fade-up, .slide-left, .slide-right').forEach(el => {
-    new IntersectionObserver(([entry])=>{
-      if(entry.isIntersecting) entry.target.classList.add('visible');
-    }, { threshold: 0.1 }).observe(el);
+  document.querySelectorAll('.stat-number[data-count]').forEach(el => counterObserver.observe(el));
+})();
+
+/* ===== TRANSLATIONS ===== */
+const translations = {
+  ru: {
+    'nav-home': 'Главная',
+    'nav-products': 'Продукты',
+    'nav-tech': 'Технологии',
+    'nav-about': 'О нас',
+    'nav-contact': 'Контакты',
+    'nav-cta': 'Связаться',
+    'hero-badge': 'Передовые графеновые технологии',
+    'hero-title-1': 'Графеновые',
+    'hero-title-2': 'Композитные Валки',
+    'hero-sub': 'Революционные композитные валки с графеновым покрытием. Повышение износостойкости до 300% при экстремальных температурах.',
+    'hero-cta': 'Связаться через WhatsApp',
+    'hero-learn': 'Узнать больше',
+    'scroll': 'Листайте',
+    'benefits-tag': 'Преимущества',
+    'benefits-title': 'Почему Graphene Roller?',
+    'benefits-sub': 'Ключевые показатели эффективности наших графеновых композитных валков',
+    'benefit-1-num': '+300%',
+    'benefit-1-text': 'Повышенная износостойкость по сравнению с традиционными валками',
+    'benefit-2-num': '−40°C',
+    'benefit-2-text': 'Работоспособность при экстремально низких температурах',
+    'benefit-3-num': '8→24 мес.',
+    'benefit-3-text': 'Увеличенный срок службы — до 24 месяцев эксплуатации',
+    'benefit-4-num': '40% экономии',
+    'benefit-4-text': 'Снижение затрат на обслуживание и замену',
+    'products-tag': 'Продукция',
+    'products-title': 'Наши валки',
+    'products-sub': 'Серия графеновых композитных валков для различных промышленных применений',
+    'tag-bestseller': 'Хит продаж',
+    'product-1-name': 'GR-2000 Pro',
+    'product-1-desc': 'Универсальный графеновый композитный валок для пищевой и упаковочной промышленности.',
+    'spec-diameter': '⌀ 200 мм',
+    'spec-length': 'L 2000 мм',
+    'spec-temp': '−40..+200°C',
+    'spec-hardness': 'HRC 62',
+    'tag-heavy': 'Тяжелая серия',
+    'product-2-name': 'GH-5000 Heavy Duty',
+    'product-2-desc': 'Усиленный валок для горнодобывающей и металлургической промышленности с повышенной нагрузкой.',
+    'spec-diameter-2': '⌀ 350 мм',
+    'spec-length-2': 'L 5000 мм',
+    'spec-temp-2': '−50..+300°C',
+    'spec-hardness-2': 'HRC 68',
+    'tag-smart': 'Smart',
+    'product-3-name': 'GS-1000 Smart',
+    'product-3-desc': 'Прецизионный валок со встроенными датчиками для контроля температуры и износа.',
+    'spec-diameter-3': '⌀ 150 мм',
+    'spec-length-3': 'L 1000 мм',
+    'spec-temp-3': '−30..+180°C',
+    'spec-iot': 'IoT Ready',
+    'tech-tag': 'Технологии',
+    'tech-title': 'Наши технологии',
+    'tech-sub': 'Инновационные разработки в области графеновых композитных материалов',
+    'tech-1-title': 'Материаловедение',
+    'tech-1-desc': 'Собственные разработки в области графеновых композитов с многослойной структурой для максимальной прочности.',
+    'tech-2-title': 'Нано-покрытие',
+    'tech-2-desc': 'CVD-нанесение графенового покрытия толщиной от 3 нм с равномерным распределением.',
+    'tech-3-title': 'Прецизионность',
+    'tech-3-desc': 'Точность обработки до 0.001 мм на станках с ЧПУ 7-го поколения с лазерной калибровкой.',
+    'tech-4-title': 'Контроль качества',
+    'tech-4-desc': 'Многоступенчатый контроль: спектроскопия, термотестирование, механические испытания.',
+    'about-tag': 'О компании',
+    'about-title': 'Лидер в производстве графеновых валков',
+    'about-text': 'Graphene Roller — международная компания, специализирующаяся на производстве графеновых композитных валков. Мы объединяем передовые нанотехнологии с многолетним опытом в машиностроении.',
+    'stat-installations': 'Установок',
+    'stat-clients': 'Клиентов',
+    'stat-countries': 'Стран',
+    'stat-iso': 'ISO сертификат',
+    'process-tag': 'Процесс',
+    'process-title': 'Как мы создаем ваши валки',
+    'process-sub': 'От сырья до готового продукта — 6 этапов производства',
+    'step-1-title': 'Материалы',
+    'step-1-desc': 'Отбор высокочистого графита и стальных основ',
+    'step-2-title': 'CVD синтез',
+    'step-2-desc': 'Химическое осаждение графена из газовой фазы',
+    'step-3-title': 'Покрытие',
+    'step-3-desc': 'Многослойное нанесение графенового композита',
+    'step-4-title': 'Тестирование',
+    'step-4-desc': 'Спектроскопия и механические испытания',
+    'step-5-title': 'Сборка',
+    'step-5-desc': 'Прецизионная сборка и балансировка',
+    'step-6-title': 'Доставка',
+    'step-6-desc': 'Упаковка и доставка по всему миру',
+    'global-tag': 'Присутствие',
+    'global-title': 'Глобальное присутствие',
+    'global-sub': 'Мы работаем с клиентами по всему миру',
+    'country-kz': 'Казахстан',
+    'country-ru': 'Россия',
+    'country-uae': 'ОАЭ',
+    'country-de': 'Германия',
+    'country-us': 'США',
+    'country-cn': 'Китай',
+    'country-tr': 'Турция',
+    'country-in': 'Индия',
+    'country-kr': 'Южная Корея',
+    'contact-tag': 'Контакты',
+    'contact-title': 'Свяжитесь с нами',
+    'contact-sub': 'Отправьте запрос и получите консультацию по нашим продуктам',
+    'form-name': 'Имя',
+    'form-name-ph': 'Ваше имя',
+    'form-email': 'Email',
+    'form-phone': 'Телефон',
+    'form-message': 'Сообщение',
+    'form-msg-ph': 'Опишите ваш запрос...',
+    'form-submit': 'Отправить запрос',
+    'form-success': 'Спасибо! Мы свяжемся с вами в ближайшее время.',
+    'contact-email': 'Email',
+    'contact-location': 'Адрес',
+    'contact-address': 'Астана, Казахстан, пр. Республики 15',
+    'contact-hours': 'Часы работы',
+    'contact-hours-text': 'Пн-Пт: 9:00 — 18:00',
+    'cta-title': 'Готовы повысить эффективность?',
+    'cta-sub': 'Свяжитесь с нами сегодня и получите индивидуальное коммерческое предложение',
+    'cta-btn': 'Написать в WhatsApp',
+    'footer-desc': 'Инновационные графеновые композитные валки для промышленности. Качество, подтвержденное международными сертификатами.',
+    'footer-products-title': 'Продукция',
+    'footer-gr2000': 'GR-2000 Pro',
+    'footer-gh5000': 'GH-5000 Heavy Duty',
+    'footer-gs1000': 'GS-1000 Smart',
+    'footer-custom': 'Индивидуальные заказы',
+    'footer-support-title': 'Поддержка',
+    'footer-docs': 'Техническая документация',
+    'footer-warranty': 'Гарантия',
+    'footer-service': 'Сервисное обслуживание',
+    'footer-faq': 'FAQ',
+    'footer-legal-title': 'Правовая информация',
+    'footer-privacy': 'Политика конфиденциальности',
+    'footer-terms': 'Условия использования',
+    'footer-cookies': 'Cookie',
+    'footer-compliance': 'Соответствие стандартам',
+    'footer-copy': '© 2026 Graphene Roller. Все права защищены.',
+    'chat-title': 'Чат поддержки',
+    'chat-greeting': 'Здравствуйте! Чем мы можем вам помочь? Выберите интересующий вас вопрос.',
+    'chat-q-prices': 'Цены',
+    'chat-q-delivery': 'Доставка',
+    'chat-q-catalog': 'Каталог',
+    'chat-q-discount': 'Скидки',
+    'chat-q-contact': 'Контакты',
+    'chat-input-ph': 'Введите сообщение...',
+    'chat-r-prices': 'Стоимость зависит от модели и объема заказа. Напишите нам в WhatsApp для расчета индивидуального предложения.',
+    'chat-r-delivery': 'Мы осуществляем доставку по всему миру. Сроки доставки: от 5 до 14 рабочих дней в зависимости от региона.',
+    'chat-r-catalog': 'Полный каталог нашей продукции доступен по запросу. Свяжитесь с нами для получения PDF-каталога.',
+    'chat-r-discount': 'Мы предлагаем скидки при заказе от 5 единиц и постоянным клиентам. Свяжитесь для обсуждения условий.',
+    'chat-r-contact': 'Вы можете связаться с нами: WhatsApp +77022655423, Email: info@grapheneroller.com',
+    'chat-r-default': 'Спасибо за ваш вопрос! Наш менеджер свяжется с вами в ближайшее время. Или напишите нам в WhatsApp.'
+  },
+  en: {
+    'nav-home': 'Home',
+    'nav-products': 'Products',
+    'nav-tech': 'Technology',
+    'nav-about': 'About',
+    'nav-contact': 'Contact',
+    'nav-cta': 'Get in Touch',
+    'hero-badge': 'Advanced Graphene Technology',
+    'hero-title-1': 'Graphene',
+    'hero-title-2': 'Composite Rollers',
+    'hero-sub': 'Revolutionary composite rollers with graphene coating. Up to 300% increased wear resistance at extreme temperatures.',
+    'hero-cta': 'Contact via WhatsApp',
+    'hero-learn': 'Learn More',
+    'scroll': 'Scroll',
+    'benefits-tag': 'Benefits',
+    'benefits-title': 'Why Graphene Roller?',
+    'benefits-sub': 'Key performance indicators of our graphene composite rollers',
+    'benefit-1-num': '+300%',
+    'benefit-1-text': 'Increased wear resistance compared to traditional rollers',
+    'benefit-2-num': '−40°C',
+    'benefit-2-text': 'Operational at extremely low temperatures',
+    'benefit-3-num': '8→24 mo.',
+    'benefit-3-text': 'Extended service life — up to 24 months of operation',
+    'benefit-4-num': '40% savings',
+    'benefit-4-text': 'Reduced maintenance and replacement costs',
+    'products-tag': 'Products',
+    'products-title': 'Our Rollers',
+    'products-sub': 'Series of graphene composite rollers for various industrial applications',
+    'tag-bestseller': 'Bestseller',
+    'product-1-name': 'GR-2000 Pro',
+    'product-1-desc': 'Universal graphene composite roller for food and packaging industry.',
+    'spec-diameter': '⌀ 200 mm',
+    'spec-length': 'L 2000 mm',
+    'spec-temp': '−40..+200°C',
+    'spec-hardness': 'HRC 62',
+    'tag-heavy': 'Heavy Duty',
+    'product-2-name': 'GH-5000 Heavy Duty',
+    'product-2-desc': 'Reinforced roller for mining and metallurgical industry with high load capacity.',
+    'spec-diameter-2': '⌀ 350 mm',
+    'spec-length-2': 'L 5000 mm',
+    'spec-temp-2': '−50..+300°C',
+    'spec-hardness-2': 'HRC 68',
+    'tag-smart': 'Smart',
+    'product-3-name': 'GS-1000 Smart',
+    'product-3-desc': 'Precision roller with built-in sensors for real-time temperature and wear monitoring.',
+    'spec-diameter-3': '⌀ 150 mm',
+    'spec-length-3': 'L 1000 mm',
+    'spec-temp-3': '−30..+180°C',
+    'spec-iot': 'IoT Ready',
+    'tech-tag': 'Technology',
+    'tech-title': 'Our Technology',
+    'tech-sub': 'Innovative developments in graphene composite materials',
+    'tech-1-title': 'Material Science',
+    'tech-1-desc': 'Proprietary graphene composite development with multilayer structure for maximum strength.',
+    'tech-2-title': 'Nano Coating',
+    'tech-2-desc': 'CVD graphene coating deposition from 3 nm with uniform distribution.',
+    'tech-3-title': 'Precision',
+    'tech-3-desc': 'Processing accuracy up to 0.001 mm on 7th-gen CNC machines with laser calibration.',
+    'tech-4-title': 'Quality Control',
+    'tech-4-desc': 'Multi-stage control: spectroscopy, thermal testing, mechanical testing of each roller.',
+    'about-tag': 'About',
+    'about-title': 'Leader in Graphene Roller Manufacturing',
+    'about-text': 'Graphene Roller is an international company specializing in graphene composite rollers. We combine advanced nanotechnology with years of engineering experience.',
+    'stat-installations': 'Installations',
+    'stat-clients': 'Clients',
+    'stat-countries': 'Countries',
+    'stat-iso': 'ISO Certified',
+    'process-tag': 'Process',
+    'process-title': 'How We Make Your Rollers',
+    'process-sub': 'From raw materials to finished product — 6 production stages',
+    'step-1-title': 'Materials',
+    'step-1-desc': 'Selection of high-purity graphite and steel bases',
+    'step-2-title': 'CVD Synthesis',
+    'step-2-desc': 'Chemical vapor deposition of graphene',
+    'step-3-title': 'Coating',
+    'step-3-desc': 'Multilayer graphene composite application',
+    'step-4-title': 'Testing',
+    'step-4-desc': 'Spectroscopy and mechanical testing',
+    'step-5-title': 'Assembly',
+    'step-5-desc': 'Precision assembly and balancing',
+    'step-6-title': 'Delivery',
+    'step-6-desc': 'Packaging and worldwide shipping',
+    'global-tag': 'Global',
+    'global-title': 'Global Presence',
+    'global-sub': 'We work with clients worldwide',
+    'country-kz': 'Kazakhstan',
+    'country-ru': 'Russia',
+    'country-uae': 'UAE',
+    'country-de': 'Germany',
+    'country-us': 'USA',
+    'country-cn': 'China',
+    'country-tr': 'Turkey',
+    'country-in': 'India',
+    'country-kr': 'South Korea',
+    'contact-tag': 'Contact',
+    'contact-title': 'Get In Touch',
+    'contact-sub': 'Send an inquiry and get a consultation on our products',
+    'form-name': 'Name',
+    'form-name-ph': 'Your name',
+    'form-email': 'Email',
+    'form-phone': 'Phone',
+    'form-message': 'Message',
+    'form-msg-ph': 'Describe your request...',
+    'form-submit': 'Send Inquiry',
+    'form-success': 'Thank you! We will contact you shortly.',
+    'contact-email': 'Email',
+    'contact-location': 'Location',
+    'contact-address': 'Astana, Kazakhstan, 15 Respubliki Ave',
+    'contact-hours': 'Working Hours',
+    'contact-hours-text': 'Mon-Fri: 9:00 — 18:00',
+    'cta-title': 'Ready to Boost Efficiency?',
+    'cta-sub': 'Contact us today and get a personalized commercial offer',
+    'cta-btn': 'Write on WhatsApp',
+    'footer-desc': 'Innovative graphene composite rollers for industry. Quality confirmed by international certificates.',
+    'footer-products-title': 'Products',
+    'footer-gr2000': 'GR-2000 Pro',
+    'footer-gh5000': 'GH-5000 Heavy Duty',
+    'footer-gs1000': 'GS-1000 Smart',
+    'footer-custom': 'Custom Orders',
+    'footer-support-title': 'Support',
+    'footer-docs': 'Technical Documentation',
+    'footer-warranty': 'Warranty',
+    'footer-service': 'Service',
+    'footer-faq': 'FAQ',
+    'footer-legal-title': 'Legal',
+    'footer-privacy': 'Privacy Policy',
+    'footer-terms': 'Terms of Use',
+    'footer-cookies': 'Cookies',
+    'footer-compliance': 'Compliance',
+    'footer-copy': '© 2026 Graphene Roller. All rights reserved.',
+    'chat-title': 'Chat Support',
+    'chat-greeting': 'Hello! How can we help you? Please select a topic below.',
+    'chat-q-prices': 'Prices',
+    'chat-q-delivery': 'Delivery',
+    'chat-q-catalog': 'Catalog',
+    'chat-q-discount': 'Discounts',
+    'chat-q-contact': 'Contact',
+    'chat-input-ph': 'Type a message...',
+    'chat-r-prices': 'Pricing depends on model and order volume. Contact us on WhatsApp for a custom quote.',
+    'chat-r-delivery': 'We ship worldwide. Delivery takes 5-14 business days depending on region.',
+    'chat-r-catalog': 'Our full product catalog is available upon request. Contact us for a PDF catalog.',
+    'chat-r-discount': 'We offer discounts for orders of 5+ units and for returning clients. Contact us for details.',
+    'chat-r-contact': 'You can reach us: WhatsApp +77022655423, Email: info@grapheneroller.com',
+    'chat-r-default': 'Thank you for your question! Our manager will contact you shortly. Or write us on WhatsApp.'
+  },
+  kk: {
+    'nav-home': 'Басты бет',
+    'nav-products': 'Өнімдер',
+    'nav-tech': 'Технологиялар',
+    'nav-about': 'Біз туралы',
+    'nav-contact': 'Байланыс',
+    'nav-cta': 'Хабарласу',
+    'hero-badge': 'Озық графен технологиялары',
+    'hero-title-1': 'Графенді',
+    'hero-title-2': 'Композиттік Біліктер',
+    'hero-sub': 'Графен жабыны бар революциялық композиттік біліктер. Төтенше температурада тозуға төзімділікті 300%-ға арттыру.',
+    'hero-cta': 'WhatsApp арқылы хабарласу',
+    'hero-learn': 'Көбірек білу',
+    'scroll': 'Айналдыру',
+    'benefits-tag': 'Артықшылықтар',
+    'benefits-title': 'Неліктен Graphene Roller?',
+    'benefits-sub': 'Графенді композиттік біліктеріміздің негізгі көрсеткіштері',
+    'benefit-1-num': '+300%',
+    'benefit-1-text': 'Дәстүрлі біліктермен салыстырғанда тозуға төзімділіктің артуы',
+    'benefit-2-num': '−40°C',
+    'benefit-2-text': 'Төтенше төмен температурада жұмыс істеу мүмкіндігі',
+    'benefit-3-num': '8→24 ай',
+    'benefit-3-text': 'Ұзартылған қызмет мерзімі — 24 айға дейін',
+    'benefit-4-num': '40% үнемдеу',
+    'benefit-4-text': 'Қызмет көрсету және ауыстыру шығындарын азайту',
+    'products-tag': 'Өнімдер',
+    'products-title': 'Біздің біліктер',
+    'products-sub': 'Әртүрлі өнеркәсіптік қолдануға арналған графенді композиттік біліктер сериясы',
+    'tag-bestseller': 'Үздік сатылым',
+    'product-1-name': 'GR-2000 Pro',
+    'product-1-desc': 'Тамақ және орау өнеркәсібіне арналған әмбебап графенді композиттік білік.',
+    'spec-diameter': '⌀ 200 мм',
+    'spec-length': 'L 2000 мм',
+    'spec-temp': '−40..+200°C',
+    'spec-hardness': 'HRC 62',
+    'tag-heavy': 'Ауыр серия',
+    'product-2-name': 'GH-5000 Heavy Duty',
+    'product-2-desc': 'Тау-кен және металлургия өнеркәсібіне арналған күшейтілген білік.',
+    'spec-diameter-2': '⌀ 350 мм',
+    'spec-length-2': 'L 5000 мм',
+    'spec-temp-2': '−50..+300°C',
+    'spec-hardness-2': 'HRC 68',
+    'tag-smart': 'Smart',
+    'product-3-name': 'GS-1000 Smart',
+    'product-3-desc': 'Нақты уақытта температура мен тозуды бақылауға арналған сенсорлары бар прецизионды білік.',
+    'spec-diameter-3': '⌀ 150 мм',
+    'spec-length-3': 'L 1000 мм',
+    'spec-temp-3': '−30..+180°C',
+    'spec-iot': 'IoT Ready',
+    'tech-tag': 'Технологиялар',
+    'tech-title': 'Біздің технологиялар',
+    'tech-sub': 'Графенді композиттік материалдар саласындағы инновациялық әзірлемелер',
+    'tech-1-title': 'Материалтану',
+    'tech-1-desc': 'Максималды беріктік үшін көпқабатты құрылымы бар графенді композиттерді әзірлеу.',
+    'tech-2-title': 'Наножабын',
+    'tech-2-desc': '3 нм-ден бастап біркелкі таралуымен графен жабынын CVD жағу.',
+    'tech-3-title': 'Прецизиондық',
+    'tech-3-desc': 'Лазерлік калибрлеумен 7-ші буын CNC станоктарында 0.001 мм дейін өңдеу дәлдігі.',
+    'tech-4-title': 'Сапа бақылау',
+    'tech-4-desc': 'Көпсатылы бақылау: спектроскопия, термиялық сынау, механикалық сынақтар.',
+    'about-tag': 'Біз туралы',
+    'about-title': 'Графенді біліктер өндірісіндегі көшбасшы',
+    'about-text': 'Graphene Roller — графенді композиттік біліктер өндірісіне маманданған халықаралық компания. Біз озық нанотехнологияларды машинажасаудағы көпжылдық тәжірибемен біріктіреміз.',
+    'stat-installations': 'Орнатулар',
+    'stat-clients': 'Клиенттер',
+    'stat-countries': 'Елдер',
+    'stat-iso': 'ISO сертификаты',
+    'process-tag': 'Процесс',
+    'process-title': 'Біліктерімізді қалай жасаймыз',
+    'process-sub': 'Шикізаттан дайын өнімге дейін — 6 өндіріс кезеңі',
+    'step-1-title': 'Материалдар',
+    'step-1-desc': 'Жоғары таза графит пен болат негіздерін іріктеу',
+    'step-2-title': 'CVD синтезі',
+    'step-2-desc': 'Газ фазасынан графенді химиялық тұндыру',
+    'step-3-title': 'Жабын',
+    'step-3-desc': 'Графенді композитті көпқабатты жағу',
+    'step-4-title': 'Тестілеу',
+    'step-4-desc': 'Спектроскопия және механикалық сынақтар',
+    'step-5-title': 'Құрастыру',
+    'step-5-desc': 'Прецизионды құрастыру және теңгерімдеу',
+    'step-6-title': 'Жеткізу',
+    'step-6-desc': 'Бүкіл әлемге жеткізу',
+    'global-tag': 'Қатысу',
+    'global-title': 'Жаһандық қатысу',
+    'global-sub': 'Біз бүкіл әлемдегі клиенттермен жұмыс істейміз',
+    'country-kz': 'Қазақстан',
+    'country-ru': 'Ресей',
+    'country-uae': 'БАӘ',
+    'country-de': 'Германия',
+    'country-us': 'АҚШ',
+    'country-cn': 'Қытай',
+    'country-tr': 'Түркия',
+    'country-in': 'Үндістан',
+    'country-kr': 'Оңтүстік Корея',
+    'contact-tag': 'Байланыс',
+    'contact-title': 'Бізбен хабарласыңыз',
+    'contact-sub': 'Сұрау жіберіп, өнімдеріміз бойынша кеңес алыңыз',
+    'form-name': 'Аты',
+    'form-name-ph': 'Сіздің атыңыз',
+    'form-email': 'Email',
+    'form-phone': 'Телефон',
+    'form-message': 'Хабарлама',
+    'form-msg-ph': 'Сұрауыңызды сипаттаңыз...',
+    'form-submit': 'Сұрау жіберу',
+    'form-success': 'Рахмет! Біз сізге жақын арада хабарласамыз.',
+    'contact-email': 'Email',
+    'contact-location': 'Мекенжай',
+    'contact-address': 'Астана, Қазақстан, Республика даңғылы 15',
+    'contact-hours': 'Жұмыс уақыты',
+    'contact-hours-text': 'Дс-Жм: 9:00 — 18:00',
+    'cta-title': 'Тиімділікті арттыруға дайынсыз ба?',
+    'cta-sub': 'Бүгін бізге хабарласып, жеке коммерциялық ұсыныс алыңыз',
+    'cta-btn': 'WhatsApp жазу',
+    'footer-desc': 'Өнеркәсіпке арналған инновациялық графенді композиттік біліктер. Халықаралық сертификаттармен расталған сапа.',
+    'footer-products-title': 'Өнімдер',
+    'footer-gr2000': 'GR-2000 Pro',
+    'footer-gh5000': 'GH-5000 Heavy Duty',
+    'footer-gs1000': 'GS-1000 Smart',
+    'footer-custom': 'Жеке тапсырыстар',
+    'footer-support-title': 'Қолдау',
+    'footer-docs': 'Техникалық құжаттама',
+    'footer-warranty': 'Кепілдік',
+    'footer-service': 'Сервистік қызмет',
+    'footer-faq': 'FAQ',
+    'footer-legal-title': 'Құқықтық ақпарат',
+    'footer-privacy': 'Құпиялылық саясаты',
+    'footer-terms': 'Пайдалану шарттары',
+    'footer-cookies': 'Cookie',
+    'footer-compliance': 'Стандарттарға сәйкестік',
+    'footer-copy': '© 2026 Graphene Roller. Барлық құқықтар қорғалған.',
+    'chat-title': 'Чат қолдау',
+    'chat-greeting': 'Сәлеметсіз бе! Қалай көмектесе аламыз? Сұрағыңызды таңдаңыз.',
+    'chat-q-prices': 'Бағалар',
+    'chat-q-delivery': 'Жеткізу',
+    'chat-q-catalog': 'Каталог',
+    'chat-q-discount': 'Жеңілдіктер',
+    'chat-q-contact': 'Байланыс',
+    'chat-input-ph': 'Хабарлама енгізу...',
+    'chat-r-prices': 'Баға модельге және тапсырыс көлеміне байланысты. Жеке ұсыныс үшін WhatsApp арқылы жазыңыз.',
+    'chat-r-delivery': 'Біз бүкіл әлемге жеткіземіз. Жеткізу мерзімі: аймаққа байланысты 5-14 жұмыс күні.',
+    'chat-r-catalog': 'Өнімдеріміздің толық каталогы сұрау бойынша қолжетімді. PDF каталог алу үшін хабарласыңыз.',
+    'chat-r-discount': '5+ бірлікке тапсырыс бергенде және тұрақты клиенттерге жеңілдіктер ұсынамыз.',
+    'chat-r-contact': 'Бізге хабарласуға болады: WhatsApp +77022655423, Email: info@grapheneroller.com',
+    'chat-r-default': 'Сұрағыңыз үшін рахмет! Менеджеріміз жақын арада хабарласады. Немесе WhatsApp арқылы жазыңыз.'
+  }
+};
+
+/* ===== LANGUAGE SWITCHER ===== */
+(function(){
+  let currentLang = 'ru';
+
+  function applyLanguage(lang){
+    currentLang = lang;
+    const t = translations[lang];
+    if(!t) return;
+
+    document.documentElement.lang = lang === 'kk' ? 'kk' : lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if(t[key]) el.textContent = t[key];
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if(t[key]) el.placeholder = t[key];
+    });
+
+    document.querySelectorAll('.lang-toggle button').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+
+    // Update chatbot greeting
+    const greeting = document.querySelector('#chatMessages .chat-msg.bot');
+    if(greeting && t['chat-greeting']) greeting.textContent = t['chat-greeting'];
+  }
+
+  document.querySelectorAll('.lang-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => applyLanguage(btn.getAttribute('data-lang')));
   });
 
-  // ===== chatbot =====
-  const toggleBtn = document.getElementById('chatbotToggle');
-  const panel = document.getElementById('chatbotPanel');
-  toggleBtn.addEventListener('click', ()=> panel.classList.toggle('open'));
-  document.querySelectorAll('.quick-reply button').forEach(btn => {
-    btn.addEventListener('click', ()=>{
-      const msg = document.createElement('div');
-      msg.className = 'chatbot-msg';
-      msg.textContent = '👉 ' + btn.textContent + ': спасибо! Мы свяжемся.';
-      panel.insertBefore(msg, panel.querySelector('.quick-reply'));
+  // Export for chatbot
+  window.__applyLang = applyLanguage;
+  window.__currentLang = () => currentLang;
+  window.__t = (key) => translations[currentLang]?.[key] || key;
+})();
+
+/* ===== CONTACT FORM ===== */
+(function(){
+  const form = document.getElementById('contactForm');
+  const success = document.getElementById('formSuccess');
+  if(!form) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('formName').value.trim();
+    const email = document.getElementById('formEmail').value.trim();
+    const phone = document.getElementById('formPhone').value.trim();
+    const message = document.getElementById('formMessage').value.trim();
+
+    // Show success
+    success.classList.add('show');
+    form.reset();
+
+    // Redirect to WhatsApp
+    const lang = window.__currentLang ? window.__currentLang() : 'ru';
+    const text = lang === 'ru'
+      ? `Здравствуйте! Меня интересуют графеновые валки.%0A%0AИмя: ${name}%0AEmail: ${email}%0ATелефон: ${phone}%0AСообщение: ${message}`
+      : lang === 'kk'
+        ? `Сәлеметсіз бе! Мені графенді біліктер қызықтырады.%0A%0AАты: ${name}%0AEmail: ${email}%0AТелефон: ${phone}%0AХабарлама: ${message}`
+        : `Hello! I'm interested in graphene rollers.%0A%0AName: ${name}%0AEmail: ${email}%0APhone: ${phone}%0AMessage: ${message}`;
+
+    setTimeout(() => {
+      window.open(`https://wa.me/77022655423?text=${text}`, '_blank');
+    }, 1500);
+  });
+})();
+
+/* ===== CHATBOT ===== */
+(function(){
+  const toggle = document.getElementById('chatToggle');
+  const panel = document.getElementById('chatPanel');
+  const close = document.getElementById('chatClose');
+  const messages = document.getElementById('chatMessages');
+  const input = document.getElementById('chatInput');
+  const send = document.getElementById('chatSend');
+  const quickReply = document.getElementById('chatQuickReply');
+
+  if(!toggle || !panel) return;
+
+  toggle.addEventListener('click', () => panel.classList.toggle('open'));
+  close.addEventListener('click', () => panel.classList.remove('open'));
+
+  function addMessage(text, type){
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + type;
+    div.textContent = text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function handleQuery(query){
+    const lang = window.__currentLang ? window.__currentLang() : 'ru';
+    const t = translations[lang];
+    let response = t['chat-r-default'] || translations.ru['chat-r-default'];
+
+    switch(query){
+      case 'prices': response = t['chat-r-prices'] || translations.ru['chat-r-prices']; break;
+      case 'delivery': response = t['chat-r-delivery'] || translations.ru['chat-r-delivery']; break;
+      case 'catalog': response = t['chat-r-catalog'] || translations.ru['chat-r-catalog']; break;
+      case 'discount': response = t['chat-r-discount'] || translations.ru['chat-r-discount']; break;
+      case 'contact': response = t['chat-r-contact'] || translations.ru['chat-r-contact']; break;
+    }
+
+    addMessage(response, 'bot');
+    quickReply.classList.add('show');
+  }
+
+  function sendMessage(){
+    const text = input.value.trim();
+    if(!text) return;
+    addMessage(text, 'user');
+    input.value = '';
+    quickReply.classList.remove('show');
+    setTimeout(() => handleQuery('default'), 500);
+  }
+
+  send.addEventListener('click', sendMessage);
+  input.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendMessage(); });
+
+  quickReply.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const query = btn.getAttribute('data-chat-query');
+      quickReply.classList.remove('show');
+      setTimeout(() => handleQuery(query), 300);
     });
   });
-
-  // ===== smooth scroll =====
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const id = a.getAttribute('href').slice(1);
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    });
-  });
+})();
 </script>
 </body>
 </html>
